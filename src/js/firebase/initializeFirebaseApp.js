@@ -1,6 +1,6 @@
-import firebase from 'firebase/app';
+import * as firebase from 'firebase/app';
 
-const config = {
+export const config = {
   apiKey: "AIzaSyBqvjuWQgui0YYmeRp1_BopGPJR9uzhBLI",
   authDomain: "autoskola-testy.firebaseapp.com",
   databaseURL: "https://autoskola-testy.firebaseio.com",
@@ -9,4 +9,11 @@ const config = {
   messagingSenderId: "770379121100"
 };
 
-firebase.initializeApp(config);
+const initializeFirebaseApp = (config) => {
+  firebase.initializeApp(config);
+}
+
+export default initializeFirebaseApp;
+
+
+// https://stackoverflow.com/questions/48718421/import-only-auth-and-firestore-from-firebase
