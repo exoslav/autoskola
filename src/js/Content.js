@@ -1,15 +1,33 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import { HashRouter as Router, Route, Link } from 'react-router-dom';
 
-import LoginForm from './LoginForm';
+import TestPage from './pages/TestPage';
+import HomePage from './pages/HomePage';
+import LoginFormContainer from './components/LoginForm/LoginFormContainer';
 import Header from './Header';
 
-class Content extends React.PureComponent {
+class Content extends React.Component {
   render() {
     return (
-      <React.Fragment>
+      <Fragment>
         <Header user={this.props.user} />
-        <LoginForm />
-      </React.Fragment>
+
+        {
+          !this.props.user &&
+          <LoginFormContainer user={this.props.user} />
+        }
+
+        <Route
+          path="/testy/:id"
+          render={(props) => (
+            <TestPage
+              {...props}
+              user={this.props.user}
+            />
+          )}
+        />
+        <Route exact path="/" component={HomePage} />
+      </Fragment>
     );
   }
 }

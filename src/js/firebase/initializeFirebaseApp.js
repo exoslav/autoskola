@@ -14,6 +14,3 @@ const initializeFirebaseApp = (config) => {
 }
 
 export default initializeFirebaseApp;
-
-
-// https://stackoverflow.com/questions/48718421/import-only-auth-and-firestore-from-firebase

@@ -1,13 +1,15 @@
 import React from 'react';
+import withTranslationsContext from './withTranslationsContext';
 
 class Header extends React.PureComponent {
   render() {
     return (
       <header>
+        <h1>Autoškola</h1>
         {
           this.props.user &&
           <div>
-            Přihlášený uživatel: {this.props.user.email}
+            {this.props.translations.signInAs}: {this.props.user.email}
           </div>
         }
       </header>
@@ -15,4 +17,4 @@ class Header extends React.PureComponent {
   }
 }
 
-export default Header;
+export default withTranslationsContext(Header);
