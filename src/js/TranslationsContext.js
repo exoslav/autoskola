@@ -4,7 +4,8 @@ const translations = {
   signUp: 'Zaregistrovat se',
   signIn: 'Přihlásit se',
   signInAs: 'Přihlášený jako',
-  errorWhenLogin: 'Vyskytla se chyba při přihlašování'
+  errorWhenSignIn: 'Vyskytla se chyba při přihlašování',
+  errorWhenSignUp: 'Vyskytla se chyba při registraci'
 };
 
 const TranslationsContext = React.createContext(translations);

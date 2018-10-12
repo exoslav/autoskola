@@ -1,13 +1,21 @@
 import * as firebase from 'firebase/app';
 import 'firebase/auth';
 
-const onAuthStateChanged = (onUserLoggedIn = () => {}) => {
+const onAuthStateChanged = (
+  onUserLoggedIn = () => {},
+  onUserLoggedOut = () => {},
+  currentUser = null
+) => {
   firebase.auth()
     .onAuthStateChanged((user) => {
       if (user) {
         onUserLoggedIn(user);
       } else {
-        console.log(`User was sign off.`);
+        if (!currentUser) {
+          return;
+        }
+
+        onUserLoggedOut();
       }
     });
 }

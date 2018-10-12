@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import FirebaseActions from '../../firebase';
 import withTranslationsContext from '../../withTranslationsContext';
 
 class LoginForm extends React.Component {
@@ -21,13 +20,13 @@ class LoginForm extends React.Component {
   signUp() {
     const { email, password } = this.state;
 
-    this.props.createUser(email, password);
+    this.props.signUpUser(email, password);
   }
 
   signIn() {
     const { email, password } = this.state;
 
-    FirebaseActions.signInWithEmailAndPassword(email, password)
+    this.props.signInUser(email, password);
   }
 
   handleOnNameChange(e) {
@@ -39,10 +38,12 @@ class LoginForm extends React.Component {
   }
 
   render() {
+    const { authInProgress, translations, error, signInType, signUpType } = this.props;
+
     return (
       <Fragment>
         {
-          this.props.loginInProgress &&
+          authInProgress &&
           <div>Loading...</div>
         }
 
@@ -68,20 +69,25 @@ class LoginForm extends React.Component {
             type="submit"
             onClick={this.signUp}
           >
-            {this.props.translations.signUp}
+            {translations.signUp}
           </button>
 
           <button
             type="submit"
             onClick={this.signIn}
           >
-            {this.props.translations.signIn}
+            {translations.signIn}
           </button>
         </form>
 
         {
-          this.props.error &&
-          <p>{`${this.props.translations.errorWhenLogin}: ${this.props.error}`}</p>
+          error && error.type === signInType &&
+          <p>{`${translations.errorWhenSignIn}: ${error.message}`}</p>
+        }
+
+        {
+          error && error.type === signUpType &&
+          <p>{`${translations.errorWhenSignUp}: ${error.message}`}</p>
         }
       </Fragment>
     );
@@ -89,21 +95,29 @@ class LoginForm extends React.Component {
 }
 
 LoginForm.defaultProps = {
+  authInProgress: false,
+  signInType: 'SIGN_IN',
+  signUpType: 'SIGN_UP',
   translations: {
     signUp: 'Zaregistrovat se',
     signIn: 'Přihlásit se',
     errorWhenLogin: 'Vyskytla se chyba při přihlašování'
   },
-  createUser: () => {}
+  signInUser: () => {},
+  signUpUser: () => {}
 };
 
 LoginForm.propTypes = {
+  authInProgress: PropTypes.bool,
+  signInType: PropTypes.string,
+  signUpType: PropTypes.string,
   translations: PropTypes.shape({
     signUp: PropTypes.string,
     signIn: PropTypes.string,
     errorWhenLogin: PropTypes.string
   }),
-  createUser: PropTypes.func
+  signInUser: PropTypes.func,
+  signUpUser: PropTypes.func
 };
 
 export default withTranslationsContext(LoginForm);

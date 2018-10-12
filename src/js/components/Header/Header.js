@@ -1,5 +1,6 @@
 import React from 'react';
-import withTranslationsContext from './withTranslationsContext';
+import PropTypes from 'prop-types';
+import withTranslationsContext from '../../withTranslationsContext';
 
 class Header extends React.PureComponent {
   render() {
@@ -16,5 +17,13 @@ class Header extends React.PureComponent {
     );
   }
 }
+
+Header.defaultProps = {
+  user: null
+};
+
+Header.propTypes = {
+  user: PropTypes.shape({})
+};
 
 export default withTranslationsContext(Header);

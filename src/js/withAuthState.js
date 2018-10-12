@@ -1,36 +1,32 @@
 import React from 'react';
-import FirebaseActions from './firebase';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom';
+
+import { authStateController } from './redux/reducers/authReducer';
 
 export default (BaseComponent) => {
   class WithAuthState extends React.Component {
-    constructor() {
-      super();
-
-      this.state = {
-        user: null
-      };
-
-      this.setUser = this.setUser.bind(this);
-    }
-
     componentDidMount() {
-      FirebaseActions.onAuthStateChanged(this.setUser);
-    }
-
-    setUser(user) {
-      this.setState({ user });
+      this.props.authStateController(this.props.user);
     }
 
     render() {
       return (
-        <BaseComponent
-          {...this.props}
-          user={this.state.user}
-        />
+        <BaseComponent {...this.props} />
       );
     }
   }
 
-  return WithAuthState;
-}
+  function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ authStateController }, dispatch);
+  }
 
+  function mapStateToProps(state) {
+    return { user: state.auth.user };
+  }
+
+  return withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(WithAuthState)
+  );
+}

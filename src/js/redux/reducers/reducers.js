@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux'
-import loginReducer from './loginReducer'
+import authReducer from './authReducer'
+import questionFieldsReducer from './questionFieldsReducer'
 import licenseCategoriesReducer from './licenseCategoriesReducer'
 
 export default combineReducers({
-  login: loginReducer,
-  licenseCategories: licenseCategoriesReducer
+  auth: authReducer,
+  licenseCategories: licenseCategoriesReducer,
+  questionFields: questionFieldsReducer
 })

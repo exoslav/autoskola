@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import { createUser } from '../../redux/reducers/loginReducer';
+import { signInUser, signUpUser, TYPE_SIGN_IN, TYPE_SIGN_UP } from '../../redux/reducers/authReducer';
 
 import LoginForm from './LoginForm';
 
@@ -10,22 +10,23 @@ class LoginFormContainer extends React.Component {
     return (
       <LoginForm
         error={this.props.error}
-        loginInProgress={this.props.loginInProgress}
-        createUser={this.props.createUser}
+        authInProgress={this.props.authInProgress}
+        signInUser={this.props.signInUser}
+        signUpUser={this.props.signUpUser}
+        signInType={TYPE_SIGN_IN}
+        signUpType={TYPE_SIGN_UP}
       />
     );
   }
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ createUser }, dispatch);
+  return bindActionCreators({ signUpUser, signInUser }, dispatch);
 }
 
 function mapStateToProps(state) {
-  const { loginInProgress, error } = state.login;
-  return { loginInProgress, error };
+  const { authInProgress, error } = state.auth;
+  return { authInProgress, error };
 }
 
-const withMapDispatchToProps = connect(mapStateToProps, mapDispatchToProps)(LoginFormContainer);
-
-export default withMapDispatchToProps;
+export default connect(mapStateToProps, mapDispatchToProps)(LoginFormContainer);
