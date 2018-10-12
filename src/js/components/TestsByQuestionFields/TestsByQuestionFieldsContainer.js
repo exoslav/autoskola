@@ -7,17 +7,17 @@ import TestsByQuestionFields  from './TestsByQuestionFields';
 class TestsByQuestionFieldsContainer extends React.Component {
   render() {
     return (
-      <TestsByQuestionFields questionFields={this.props.questionFields} />
+      <TestsByQuestionFields questionFields={this.props.questions} />
     );
   }
 }
 
 TestsByQuestionFieldsContainer.defaultProps = {
-  questionFields: []
+  questions: []
 };
 
 TestsByQuestionFieldsContainer.propTypes = {
-  questionFields: PropTypes.arrayOf(
+  questions: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
       icon: PropTypes.string,
@@ -28,7 +28,7 @@ TestsByQuestionFieldsContainer.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    questionFields: state.questionFields
+    questions: state.questions.items
   };
 }
 

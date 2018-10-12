@@ -1,58 +1,29 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-
-import * as firebase from 'firebase/app';
+import { bindActionCreators } from 'redux';
 import 'firebase/firestore';
 
-class QuestionsPage extends React.Component {
-  constructor() {
-    super();
+import { getQuestions, removeQuestionsFromCategory } from '../../redux/reducers/questionsReducer';
 
-    this.state = {
-      header: '',
-      perex: '',
-      questionList: []
-    };
+
+class QuestionsPage extends React.Component {
+  componentWillUnmount() {
+    this.props.removeQuestionsFromCategory(this.props.questionCategory.id);
   }
 
   componentDidMount() {
-    const category = this.fetchCategory();
-
-    this.setState({
-      header: category.name,
-      perex: category.perex,
-    });
-
-    const db = firebase.firestore();
-
-    db.settings({
-      timestampsInSnapshots: true
-    });
-
-    db.collection('otazky')
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          this.setState(state => {
-            const newQuestionList = [...state.questionList, doc.data()];
-
-            return { questionList: newQuestionList };
-          });
-        });
-      });
-  }
-
-  fetchCategory() {
-    return this.props.questionFields.find(category => category.id === this.props.match.params.id);
+    this.props.getQuestions(this.props.questionCategory.id);
   }
 
   render() {
+    const { name, perex, questions } = this.props.questionCategory;
+
     return (
       <div>
-        <h1>{this.state.header}</h1>
+        <h1>{name}</h1>
 
-        <p>{this.state.perex}</p>
+        <p>{perex}</p>
 
         <ul>
           <li>Spusit náhodný test</li>
@@ -61,16 +32,17 @@ class QuestionsPage extends React.Component {
         </ul>
 
         {
-          this.state.questionList.length <= 0 &&
+          this.props.fetching &&
           <div>Loading questions...</div>
         }
 
         {
-          this.state.questionList.length > 0 &&
+          questions &&
+          questions.length > 0 &&
           <ol>
             {
-              this.state.questionList.map((q, index) => (
-                <li>{q.name}</li>
+              questions.map((q, index) => (
+                <li key={q.id}>{`${q.id} - ${q.name}`}</li>
               ))
             }
           </ol>
@@ -81,15 +53,28 @@ class QuestionsPage extends React.Component {
 }
 
 QuestionsPage.defaultProps = {
+  fetching: false
 };
 
 QuestionsPage.propTypes = {
+  fetching: PropTypes.bool
 };
 
-const mapStateToProps = (state) => {
+function fetchCategory(fields = [], currentId) {
+  return fields.find(category => category.id === currentId);
+}
+
+const mapStateToProps = (state, props) => {
+  const currentCategory = fetchCategory(state.questions.items, props.match.params.id);
+
   return {
-    questionFields: state.questionFields
+    fetching: state.questions.fetching,
+    questionCategory: currentCategory
   };
 }
 
-export default connect(mapStateToProps)(QuestionsPage)
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({ getQuestions, removeQuestionsFromCategory }, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsPage)
