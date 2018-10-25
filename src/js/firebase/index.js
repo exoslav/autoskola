@@ -14,3 +14,4 @@ export default {
 
 // https://stackoverflow.com/questions/48718421/import-only-auth-and-firestore-from-firebase
 // https://itnext.io/hooking-up-firebase-to-your-redux-store-a5e799cf84c4
+// https://stackoverflow.com/questions/30910704/how-do-i-link-each-user-to-their-data-in-firebase

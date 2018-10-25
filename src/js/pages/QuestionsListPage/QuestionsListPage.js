@@ -2,14 +2,13 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import 'firebase/firestore';
 
+import QuestionListItem from '../../components/QuestionListItem/QuestionListItem';
 import { getQuestions, removeQuestionsFromCategory } from '../../redux/reducers/questionsReducer';
 
-
-class QuestionsPage extends React.Component {
+class QuestionsListPage extends React.Component {
   componentWillUnmount() {
-    this.props.removeQuestionsFromCategory(this.props.questionCategory.id);
+     this.props.removeQuestionsFromCategory(this.props.questionCategory.id);
   }
 
   componentDidMount() {
@@ -26,7 +25,7 @@ class QuestionsPage extends React.Component {
         <p>{perex}</p>
 
         <ul>
-          <li>Spusit náhodný test</li>
+          <li>Spusit test a otázky setřídit náhodně</li>
           <li>Spustit test od první otázky</li>
           <li>Nastavit si vlastní test ze zobrazených otázek</li>
         </ul>
@@ -42,7 +41,12 @@ class QuestionsPage extends React.Component {
           <ol>
             {
               questions.map((q, index) => (
-                <li key={q.id}>{`${q.id} - ${q.name}`}</li>
+                <QuestionListItem
+                  key={q.id}
+                  id={q.id}
+                  question={q.question}
+                  link={`${this.props.match.params.categoryId}/${q.id}`}
+                />
               ))
             }
           </ol>
@@ -52,11 +56,11 @@ class QuestionsPage extends React.Component {
   }
 }
 
-QuestionsPage.defaultProps = {
+QuestionsListPage.defaultProps = {
   fetching: false
 };
 
-QuestionsPage.propTypes = {
+QuestionsListPage.propTypes = {
   fetching: PropTypes.bool
 };
 
@@ -65,7 +69,7 @@ function fetchCategory(fields = [], currentId) {
 }
 
 const mapStateToProps = (state, props) => {
-  const currentCategory = fetchCategory(state.questions.items, props.match.params.id);
+  const currentCategory = fetchCategory(state.questions.items, props.match.params.categoryId);
 
   return {
     fetching: state.questions.fetching,
@@ -77,4 +81,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ getQuestions, removeQuestionsFromCategory }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionsPage)
+export default connect(mapStateToProps, mapDispatchToProps)(QuestionsListPage)

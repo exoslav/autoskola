@@ -23,14 +23,7 @@ export const authStateController = (currentUser) => (dispatch) => {
 }
 
 export const signUpUser = (email, password) => (dispatch) => {
-  if (!email || !password) {
-    const errorObj = createErrorObj(
-      TYPE_SIGN_UP,
-      'invalid-email-or-password',
-      'Vyplňte všechny potřebné údaje'
-    );
-
-    throwAuthUserError(dispatch, errorObj);
+  if (!throwWrongPasswordOrEmailError(email, password, TYPE_SIGN_UP, dispatch)) {
     return;
   }
 
@@ -51,14 +44,7 @@ export const signUpUser = (email, password) => (dispatch) => {
 }
 
 export const signInUser = (email, password) => (dispatch) => {
-  if (!email || !password) {
-    const errorObj = createErrorObj(
-      TYPE_SIGN_IN,
-      'invalid-email-or-password',
-      'Vyplňte všechny potřebné údaje'
-    );
-
-    throwAuthUserError(dispatch, errorObj);
+  if (!throwWrongPasswordOrEmailError(email, password, TYPE_SIGN_IN, dispatch)) {
     return;
   }
 
@@ -80,6 +66,22 @@ export const signInUser = (email, password) => (dispatch) => {
 
 function createErrorObj(type, code, message) {
   return { type, code, message };
+}
+
+function throwWrongPasswordOrEmailError (email, password, authType, dispatch) {
+  if (!email || !password) {
+    const errorObj = createErrorObj(
+      authType,
+      'invalid-email-or-password',
+      'Vyplňte všechny potřebné údaje'
+    );
+
+    throwAuthUserError(dispatch, errorObj);
+
+    return false;
+  }
+
+  return true;
 }
 
 function throwAuthUserError (dispatch, errorObj) {

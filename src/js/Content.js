@@ -3,7 +3,8 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux'
 
 import TestPage from './pages/TestPage';
-import QuestionsPage from './pages/questions/QuestionsPage';
+import QuestionsListPage from './pages/QuestionsListPage/QuestionsListPage';
+import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage';
 import HomePage from './pages/HomePage';
 import LoginFormContainer from './components/LoginForm/LoginFormContainer';
 import Header from './components/Header/Header';
@@ -21,8 +22,14 @@ class Content extends React.Component {
 
         <Route
           exact
-          path="/otazky/:id"
-          component={QuestionsPage}
+          path="/otazky/:categoryId"
+          component={QuestionsListPage}
+        />
+
+        <Route
+          exact
+          path="/otazky/:categoryId/:questionId"
+          component={QuestionDetailPage}
         />
 
         <Route

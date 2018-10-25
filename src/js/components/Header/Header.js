@@ -1,12 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+
 import withTranslationsContext from '../../withTranslationsContext';
 
 class Header extends React.PureComponent {
   render() {
     return (
       <header>
-        <h1>Autoškola</h1>
+        <h1>
+          <Link to="/">
+            Autoškola
+          </Link>
+        </h1>
         {
           this.props.user &&
           <div>

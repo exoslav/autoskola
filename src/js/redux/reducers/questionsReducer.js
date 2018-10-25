@@ -1,56 +1,63 @@
-import getQuestionsCollections from '../../firebase/getQuestionsCollections';
+import getQuestionsCollections, { getAllQuestionsCollections } from '../../firebase/getQuestionsCollections';
 
 const initState = {
-  fetching: false,
+  fetching: true,
   items: [
     {
       id: 'pravidla-provozu',
       name: 'Pravidla provozu na pozemních komunikacích',
       icon: 'motorcycle',
       link: '/otazky/pravidla-provozu',
-      perex: 'Otázky oheldně pravidel silničního provozu.'
+      perex: 'Otázky oheldně pravidel silničního provozu.',
+      questions: []
     },
     {
       id: 'dopravni-znacky',
       name: 'Dopravní značky',
       icon: 'car-side',
       link: '/otazky/dopravni-znacky',
-      perex: 'Otázky ohledně dopravních značek.'
+      perex: 'Otázky ohledně dopravních značek.',
+      questions: []
     },
     {
       id: 'pravidla-bezpecne-jizdy',
       name: 'Zásady bezpečné jízdy',
       icon: 'truck',
       link: '/otazky/pravidla-bezpecne-jizdy',
-      perex: 'Otázky ohledně bezpečné jízdy.'
+      perex: 'Otázky ohledně bezpečné jízdy.',
+      questions: []
     },
     {
       id: 'dopravni-situace',
       name: 'Dopravní situace',
       icon: 'bus',
       link: '/otazky/dopravni-situace',
-      perex: 'Otázky ohledně dopravních situací.'
+      perex: 'Otázky ohledně dopravních situací.',
+      questions: []
     },
     {
       id: 'predpisy-provozu-vozidel',
       name: 'Předpisy o podmínkách provozu vozidel',
       icon: 'bus',
       link: '/otazky/predpisy-provozu-vozidel',
-      perex: 'Otázky ohledně předpisů vozidel.'
+      perex: 'Otázky ohledně předpisů vozidel.',
+      questions: []
     },
     {
       id: 'predpisy-souvisejici-s-provozem',
       name: 'Předpisy související s provozem',
       icon: 'bus',
       link: '/otazky/predpisy-souvisejici-s-provozem',
-      perex: 'Předpisy související s provozem.'
+      perex: 'Předpisy související s provozem.',
+      questions: []
     },
     {
       id: 'zdravotnicka-priprava',
       name: 'Zdravotnická příprava',
       icon: 'bus',
       link: '/otazky/zdravotnicka-priprava',
-      perex: 'Otázky ohledně zdravotnické přípravy.'
+      perex: 'Otázky ohledně zdravotnické přípravy.',
+      questions: []
     }
   ]
 }
@@ -68,6 +75,8 @@ export const removeQuestionsFromCategory = (categoryId) => (dispatch) => {
 
 export const getQuestions = (categoryId) => (dispatch) => {
   dispatch({ type: GET_QUESTIONS_REQUEST, payload: null });
+
+  // getAllQuestionsCollections();
 
   getQuestionsCollections(categoryId)
     .then((querySnapshot) => {

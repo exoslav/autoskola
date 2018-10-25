@@ -1,20 +1,19 @@
 import React, { Fragment } from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux'
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { faMotorcycle, faCarSide, faBus, faTruck } from '@fortawesome/free-solid-svg-icons'
+import { Provider } from 'react-redux';
+import { HashRouter as Router } from 'react-router-dom';
 
-import store from './redux/store'
+import store from './redux/store';
 import Content from './Content';
 import withAuthState from './withAuthState';
 import FirebaseActions from './firebase';
+import initIcons from './initializeIcons';
 import { config } from './firebase/initializeFirebaseApp';
 
 FirebaseActions.initializeFirebaseApp(config);
 FirebaseActions.setPersistence();
 
-library.add(faMotorcycle, faCarSide, faBus, faTruck)
+initIcons();
 
 const ContentWithAuthState = withAuthState(Content);
 
