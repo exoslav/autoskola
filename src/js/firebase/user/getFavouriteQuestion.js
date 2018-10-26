@@ -14,7 +14,6 @@ const getFavouriteQuestion = (questionId) => {
     .collection(`users`)
     .doc(`${userId}`)
     .collection('favourite-questions')
-    .doc(`${questionId}`)
     .get();
 
 }

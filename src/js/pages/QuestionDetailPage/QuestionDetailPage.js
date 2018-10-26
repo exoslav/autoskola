@@ -26,13 +26,17 @@ class QuestionDetailPage extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.user !== prevProps.user && this.props.currentQuestion) {
+    if (
+      this.props.user &&
+      this.props.user !== prevProps.user &&
+      this.props.currentQuestion
+    ) {
+      // TODO: stop calling twice
       getFavouriteQuestion(this.props.currentQuestion.id)
         .then((snapshot) => {
-          if (snapshot.data()) {
-            this.setState({ favourite: true })
-          } else {
-            this.setState({ favourite: false })
+          if (snapshot.docs.length > 0) {
+            const currentFavouriteQuestion = snapshot.docs.find(q => Number(q.id) === this.props.currentQuestion.id);
+            this.setState({ favourite: !!currentFavouriteQuestion });
           }
         });
     }
