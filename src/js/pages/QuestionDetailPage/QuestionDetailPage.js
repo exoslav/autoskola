@@ -4,25 +4,38 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import compose from '../../utils/compose';
+import withUser from './withUser';
+import withQuestionCategory from './withQuestionCategory';
+import withCurrentQuestion from './withCurrentQuestion';
+import withFavouriteQuestion from './withFavouriteQuestion';
 import { getQuestions, removeQuestionsFromCategory } from '../../redux/reducers/questionsReducer';
-import saveFavouriteQuestion from '../../firebase/user/saveFavouriteQuestion';
-import deleteFavouriteQuestion from '../../firebase/user/deleteFavouriteQuestion';
-import getFavouriteQuestion from '../../firebase/user/getFavouriteQuestion';
+import {
+  addFavouriteQuestion,
+  removeFavouriteQuestion,
+  onFavouriteQuestionsChange
+} from '../../redux/reducers/favouriteQuestionsReducer';
 
 class QuestionDetailPage extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      favourite: false,
-      selectedAnswer: null
+      selectedAnswer: null,
     };
 
+    this.unsubscribeOnFavouriteQuestionsChangeFunction = () => {};
     this.handleFavouriteClick = this.handleFavouriteClick.bind(this);
   }
 
   componentDidMount() {
-    this.props.getQuestions(this.props.questionCategory.id);
+    this.props.getQuestions(this.props.questionCategoryId);
+
+    if (this.props.user) {
+      const { uid } = this.props.user;
+
+      this.unsubscribeOnFavouriteQuestionsChangeFunction = this.props.onFavouriteQuestionsChange(uid);
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -31,36 +44,32 @@ class QuestionDetailPage extends React.Component {
       this.props.user !== prevProps.user &&
       this.props.currentQuestion
     ) {
-      // TODO: stop calling twice
-      getFavouriteQuestion(this.props.currentQuestion.id)
-        .then((snapshot) => {
-          if (snapshot.docs.length > 0) {
-            const currentFavouriteQuestion = snapshot.docs.find(q => Number(q.id) === this.props.currentQuestion.id);
-            this.setState({ favourite: !!currentFavouriteQuestion });
-          }
-        });
+      const { uid } = this.props.user;
+
+      this.unsubscribeOnFavouriteQuestionsChangeFunction = this.props.onFavouriteQuestionsChange(uid);
     }
   }
 
   componentWillUnmount() {
-     this.props.removeQuestionsFromCategory(this.props.questionCategory.id);
+    if (this.props.user) {
+      this.unsubscribeOnFavouriteQuestionsChangeFunction();
+    }
+
+    this.props.removeQuestionsFromCategory(this.props.questionCategoryId);
   }
 
   answerOnClick(index) {
     this.setState({ selectedAnswer: index })
   }
 
-  handleFavouriteClick(questionId) {
-    if (this.state.favourite) {
-      deleteFavouriteQuestion(questionId);
-      this.setState((state) => ({ favourite: false }));
-    } else {
-      saveFavouriteQuestion(questionId);
-      this.setState((state) => ({ favourite: true }));
+  handleFavouriteClick(currentQuestion) {
+    if (this.props.user) {
+      if (this.props.favourite) {
+        this.props.removeFavouriteQuestion(currentQuestion.id, this.props.user.uid);
+      } else {
+        this.props.addFavouriteQuestion(currentQuestion, this.props.user.uid);
+      }
     }
-
-
-
   }
 
   render() {
@@ -70,7 +79,8 @@ class QuestionDetailPage extends React.Component {
       );
     }
 
-    const { id, question, answers, correctAnswer } = this.props.currentQuestion;
+    const { currentQuestion, user } = this.props;
+    const { id, question, answers, correctAnswer } = currentQuestion;
 
     return (
       <div>
@@ -93,10 +103,11 @@ class QuestionDetailPage extends React.Component {
         </ol>
 
         {
-          this.props.user &&
+          user &&
+          currentQuestion &&
           <FontAwesomeIcon
-            onClick={() => this.handleFavouriteClick(id)}
-            icon={[this.state.favourite ? 'fas' : 'far', 'star']}
+            onClick={() => this.handleFavouriteClick(currentQuestion)}
+            icon={[this.props.favourite ? 'fas' : 'far', 'star']}
           />
         }
       </div>
@@ -111,27 +122,33 @@ QuestionDetailPage.defaultProps = {
 
 QuestionDetailPage.propTypes = {
   fetching: PropTypes.bool,
-  currentQuestion: PropTypes.shape()
+  currentQuestion: PropTypes.shape(),
+  questionCategoryId: PropTypes.string.isRequired
 };
 
-function fetchCategory(fields = [], currentId) {
-  return fields.find(category => category.id === currentId);
-}
-
 const mapStateToProps = (state, props) => {
-  const currentCategory = fetchCategory(state.questions.items, props.match.params.categoryId);
-  const currentQuestion = currentCategory.questions.find(q => q.id === Number(props.match.params.questionId));
-
   return {
-    user: state.auth.user,
-    currentQuestion,
-    questionCategory: currentCategory,
     fetching: state.questions.fetching
   };
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getQuestions, removeQuestionsFromCategory }, dispatch);
+  return bindActionCreators({
+    getQuestions,
+    removeQuestionsFromCategory,
+    addFavouriteQuestion,
+    removeFavouriteQuestion,
+    onFavouriteQuestionsChange
+  }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuestionDetailPage);
+const withConnect =  connect(mapStateToProps, mapDispatchToProps)(QuestionDetailPage);
+
+const enhancedQuestionDetailPage = compose(
+  withUser,
+  withQuestionCategory,
+  withCurrentQuestion,
+  withFavouriteQuestion
+)(withConnect);
+
+export default enhancedQuestionDetailPage;

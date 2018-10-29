@@ -3,13 +3,19 @@ import setPersistence from './setPersistence';
 import onAuthStateChanged from './onAuthStateChanged';
 import initializeFirebaseApp from './initializeFirebaseApp';
 import signInWithEmailAndPassword from './signInWithEmailAndPassword';
+import removeFavouriteQuestion from './removeFavouriteQuestion';
+import addFavouriteQuestion from './addFavouriteQuestion';
+import watchFavouriteQuestionsChange from './watchFavouriteQuestionsChange';
 
 export default {
   createUser,
   setPersistence,
   onAuthStateChanged,
   initializeFirebaseApp,
-  signInWithEmailAndPassword
+  signInWithEmailAndPassword,
+  removeFavouriteQuestion,
+  addFavouriteQuestion,
+  watchFavouriteQuestionsChange
 };
 
 // https://stackoverflow.com/questions/48718421/import-only-auth-and-firestore-from-firebase

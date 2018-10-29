@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import TestPage from './pages/TestPage';
 import QuestionsListPage from './pages/QuestionsListPage/QuestionsListPage';
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage';
+//import QuestionDetailPage from './pages/QuestionDetailPage';
 import HomePage from './pages/HomePage';
 import LoginFormContainer from './components/LoginForm/LoginFormContainer';
 import Header from './components/Header/Header';

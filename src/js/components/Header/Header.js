@@ -19,6 +19,13 @@ class Header extends React.PureComponent {
             {this.props.translations.signInAs}: {this.props.user.email}
           </div>
         }
+
+        {
+          this.props.user &&
+          <Link to="/oblibene-otazky">
+            Oblíbené otázky
+          </Link>
+        }
       </header>
     );
   }
