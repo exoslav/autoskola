@@ -2,10 +2,10 @@ import React, { Fragment } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux'
 
-import TestPage from './pages/TestPage';
+import TestPage from './pages/TestPage/TestPage';
 import QuestionsListPage from './pages/QuestionsListPage/QuestionsListPage';
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage';
-//import QuestionDetailPage from './pages/QuestionDetailPage';
+import FavouriteQuestionsPage from './pages/FavouriteQuestionsPage/FavouriteQuestionsPage';
 import HomePage from './pages/HomePage';
 import LoginFormContainer from './components/LoginForm/LoginFormContainer';
 import Header from './components/Header/Header';
@@ -22,6 +22,11 @@ class Content extends React.Component {
         }
 
         <Route
+          path="/oblibene-otazky"
+          component={FavouriteQuestionsPage}
+        />
+
+        <Route
           exact
           path="/otazky/:categoryId"
           component={QuestionsListPage}
@@ -34,14 +39,19 @@ class Content extends React.Component {
         />
 
         <Route
-          path="/testy/:id"
-          render={(props) => (
-            <TestPage
-              {...props}
-              user={this.props.user}
-            />
-          )}
+          path="/test"
+          component={TestPage}
         />
+
+        {/*<Route*/}
+          {/*path="/test"*/}
+          {/*render={(props) => (*/}
+            {/*<TestPage*/}
+              {/*{...props}*/}
+              {/*user={this.props.user}*/}
+            {/*/>*/}
+          {/*)}*/}
+        {/*/>*/}
 
         <Route exact path="/" component={HomePage} />
       </Fragment>

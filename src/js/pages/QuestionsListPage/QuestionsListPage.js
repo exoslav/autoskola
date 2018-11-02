@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
 import QuestionListItem from '../../components/QuestionListItem/QuestionListItem';
@@ -25,8 +26,8 @@ class QuestionsListPage extends React.Component {
         <p>{perex}</p>
 
         <ul>
-          <li>Spusit test a otázky setřídit náhodně</li>
-          <li>Spustit test od první otázky</li>
+          <Link to={`/test?kategorie=${this.props.questionCategory.id}`}>Spustit test od první otázky</Link>
+          <li>Spustit test a otázky setřídit náhodně</li>
           <li>Nastavit si vlastní test ze zobrazených otázek</li>
         </ul>
 
@@ -40,7 +41,7 @@ class QuestionsListPage extends React.Component {
           questions.length > 0 &&
           <ol>
             {
-              questions.map((q, index) => (
+              questions.map(q => (
                 <QuestionListItem
                   key={q.id}
                   id={q.id}

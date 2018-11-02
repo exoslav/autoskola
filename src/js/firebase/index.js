@@ -5,6 +5,7 @@ import initializeFirebaseApp from './initializeFirebaseApp';
 import signInWithEmailAndPassword from './signInWithEmailAndPassword';
 import removeFavouriteQuestion from './removeFavouriteQuestion';
 import addFavouriteQuestion from './addFavouriteQuestion';
+import watchFavouriteQuestionChange from './watchFavouriteQuestionChange';
 import watchFavouriteQuestionsChange from './watchFavouriteQuestionsChange';
 
 export default {
@@ -15,6 +16,7 @@ export default {
   signInWithEmailAndPassword,
   removeFavouriteQuestion,
   addFavouriteQuestion,
+  watchFavouriteQuestionChange,
   watchFavouriteQuestionsChange
 };
 

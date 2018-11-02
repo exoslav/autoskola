@@ -1,4 +1,5 @@
-import getQuestionsCollections, { getAllQuestionsCollections } from '../../firebase/getQuestionsCollections';
+import { getQuestion as getQuestionFromDb }  from '../../firebase/getQuestion';
+import getQuestionsCollections  from '../../firebase/getQuestionsCollections';
 
 const initState = {
   fetching: true,
@@ -59,12 +60,18 @@ const initState = {
       perex: 'Otázky ohledně zdravotnické přípravy.',
       questions: []
     }
-  ]
+  ],
+  currentQuestion: null
 }
+
+const GET_QUESTION_REQUEST = 'questions/GET_QUESTION_REQUEST';
+const GET_QUESTION_SUCCESS = 'questions/GET_QUESTION_SUCCESS';
 
 const GET_QUESTIONS_REQUEST = 'questions/GET_QUESTIONS_REQUEST';
 const GET_QUESTIONS_SUCCESS = 'questions/GET_QUESTIONS_SUCCESS';
+
 const REMOVE_QUESTIONS_FROM_CATEGORY = 'questions/REMOVE_QUESTIONS_FROM_CATEGORY';
+const REMOVE_QUESTION_FROM_CATEGORY = 'questions/REMOVE_QUESTION_FROM_CATEGORY';
 
 export const removeQuestionsFromCategory = (categoryId) => (dispatch) => {
   dispatch({
@@ -73,10 +80,15 @@ export const removeQuestionsFromCategory = (categoryId) => (dispatch) => {
   });
 }
 
+export const removeQuestionFromCategory = (categoryId) => (dispatch) => {
+  dispatch({
+    type: REMOVE_QUESTION_FROM_CATEGORY,
+    payload: null
+  });
+}
+
 export const getQuestions = (categoryId) => (dispatch) => {
   dispatch({ type: GET_QUESTIONS_REQUEST, payload: null });
-
-  // getAllQuestionsCollections();
 
   getQuestionsCollections(categoryId)
     .then((querySnapshot) => {
@@ -96,6 +108,21 @@ export const getQuestions = (categoryId) => (dispatch) => {
     })
 }
 
+export const getQuestion = (categoryId, questionId) => (dispatch) => {
+  dispatch({ type: GET_QUESTION_REQUEST, payload: null });
+
+  getQuestionFromDb(categoryId, questionId)
+    .then((snapshot) => {
+      dispatch({
+        type: GET_QUESTION_SUCCESS,
+        payload: snapshot.data()
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
 export default (state = initState, action) => {
   switch(action.type) {
     case GET_QUESTIONS_REQUEST:
@@ -103,7 +130,11 @@ export default (state = initState, action) => {
         ...state,
         fetching: true
       }
-      break;
+    case GET_QUESTION_REQUEST:
+      return {
+        ...state,
+        fetching: true
+      }
     case GET_QUESTIONS_SUCCESS:
       return {
         ...state,
@@ -119,7 +150,12 @@ export default (state = initState, action) => {
           return item;
         })
       }
-      break;
+    case GET_QUESTION_SUCCESS:
+      return {
+        ...state,
+        fetching: false,
+        currentQuestion: action.payload
+      }
     case REMOVE_QUESTIONS_FROM_CATEGORY:
       return {
         ...state,
@@ -134,7 +170,11 @@ export default (state = initState, action) => {
           return item;
         })
       }
-      break;
+    case REMOVE_QUESTION_FROM_CATEGORY:
+      return {
+        ...state,
+        currentQuestion: null
+      }
     default:
       return state;
   }

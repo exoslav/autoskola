@@ -11,7 +11,6 @@ export const TYPE_SIGN_IN = 'SIGN_IN';
 
 const AUTH_USER_REQUEST = 'auth/AUTH_USER_REQUEST';
 const AUTH_USER_ERROR = 'auth/AUTH_USER_ERROR';
-//const AUTH_USER_SUCCESS = 'auth/AUTH_USER_SUCCESS';
 const AUTH_USER_LOGGED_IN = 'auth/AUTH_USER_LOGGED_IN';
 const AUTH_USER_LOGGED_OUT = 'auth/AUTH_USER_LOGGED_OUT';
 
@@ -30,11 +29,6 @@ export const signUpUser = (email, password) => (dispatch) => {
   dispatch({ type: AUTH_USER_REQUEST, payload: null });
 
   FirebaseActions.createUser(email, password)
-    /*
-    .then((user) => {
-      dispatch({ type: AUTH_USER_SUCCESS, payload: user });
-    })
-    */
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -53,12 +47,6 @@ export const signInUser = (email, password) => (dispatch) => {
   dispatch({ type: AUTH_USER_REQUEST, payload: null });
 
   FirebaseActions.signInWithEmailAndPassword(email, password)
-    /*
-    .then((auth) => {
-      // TODO: already have authStateController, why is there another action for AUTH_USER_SUCCES?
-      dispatch({ type: AUTH_USER_SUCCESS, payload: auth.user });
-    })
-    */
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;
@@ -104,24 +92,12 @@ export default (state = initState, action) => {
         ...state,
         authInProgress: true
       }
-      break;
-      /*
-    case AUTH_USER_SUCCESS:
-      return {
-        ...state,
-        user: action.payload,
-        error: false,
-        authInProgress: false
-      }
-      break;
-      */
     case AUTH_USER_ERROR:
       return {
         ...state,
         error: action.payload,
         authInProgress: false
       }
-      break;
     case AUTH_USER_LOGGED_IN:
       return {
         ...state,
@@ -129,13 +105,11 @@ export default (state = initState, action) => {
         error: false,
         authInProgress: false
       }
-      break;
     case AUTH_USER_LOGGED_OUT:
       return {
         ...state,
         user: null
       }
-      break;
     default:
       return state;
   }

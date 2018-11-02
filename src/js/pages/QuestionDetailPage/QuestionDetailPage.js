@@ -5,15 +5,15 @@ import { bindActionCreators } from 'redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import compose from '../../utils/compose';
-import withUser from './withUser';
-import withQuestionCategory from './withQuestionCategory';
-import withCurrentQuestion from './withCurrentQuestion';
 import withFavouriteQuestion from './withFavouriteQuestion';
-import { getQuestions, removeQuestionsFromCategory } from '../../redux/reducers/questionsReducer';
+import withCurrentQuestion from './withCurrentQuestion';
+import withUser from '../../components/hoc/withUser';
+import withFavouriteQuestionResourcer from '../../components/hoc/withFavouriteQuestionResourcer';
+import { getQuestion, removeQuestionFromCategory } from '../../redux/reducers/questionsReducer';
 import {
   addFavouriteQuestion,
   removeFavouriteQuestion,
-  onFavouriteQuestionsChange
+  removeFavouriteQuestionFromState
 } from '../../redux/reducers/favouriteQuestionsReducer';
 
 class QuestionDetailPage extends React.Component {
@@ -24,38 +24,21 @@ class QuestionDetailPage extends React.Component {
       selectedAnswer: null,
     };
 
-    this.unsubscribeOnFavouriteQuestionsChangeFunction = () => {};
     this.handleFavouriteClick = this.handleFavouriteClick.bind(this);
   }
 
   componentDidMount() {
-    this.props.getQuestions(this.props.questionCategoryId);
+    const { categoryId, questionId} = this.props.match.params;
 
-    if (this.props.user) {
-      const { uid } = this.props.user;
-
-      this.unsubscribeOnFavouriteQuestionsChangeFunction = this.props.onFavouriteQuestionsChange(uid);
-    }
-  }
-
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.user &&
-      this.props.user !== prevProps.user &&
-      this.props.currentQuestion
-    ) {
-      const { uid } = this.props.user;
-
-      this.unsubscribeOnFavouriteQuestionsChangeFunction = this.props.onFavouriteQuestionsChange(uid);
-    }
+    this.props.getQuestion(categoryId, questionId);
   }
 
   componentWillUnmount() {
-    if (this.props.user) {
-      this.unsubscribeOnFavouriteQuestionsChangeFunction();
-    }
+    this.props.removeQuestionFromCategory(this.props.match.params.categoryId);
 
-    this.props.removeQuestionsFromCategory(this.props.questionCategoryId);
+    if (this.props.user) {
+      this.props.removeFavouriteQuestionFromState();
+    }
   }
 
   answerOnClick(index) {
@@ -67,20 +50,25 @@ class QuestionDetailPage extends React.Component {
       if (this.props.favourite) {
         this.props.removeFavouriteQuestion(currentQuestion.id, this.props.user.uid);
       } else {
-        this.props.addFavouriteQuestion(currentQuestion, this.props.user.uid);
+        this.props.addFavouriteQuestion({
+          ...currentQuestion,
+          categoryId: this.props.match.params.categoryId
+        }, this.props.user.uid);
       }
     }
   }
 
   render() {
-    if (this.props.fetching) {
+    if (this.props.fetching || !this.props.currentQuestion) {
       return (
         <div>loading...</div>
       );
     }
 
     const { currentQuestion, user } = this.props;
-    const { id, question, answers, correctAnswer } = currentQuestion;
+    const { id, question, answers, correctAnswer, prevQuestion } = currentQuestion;
+
+    console.log(prevQuestion);
 
     return (
       <div>
@@ -122,11 +110,10 @@ QuestionDetailPage.defaultProps = {
 
 QuestionDetailPage.propTypes = {
   fetching: PropTypes.bool,
-  currentQuestion: PropTypes.shape(),
-  questionCategoryId: PropTypes.string.isRequired
+  currentQuestion: PropTypes.shape()
 };
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
   return {
     fetching: state.questions.fetching
   };
@@ -134,11 +121,11 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getQuestions,
-    removeQuestionsFromCategory,
+    getQuestion,
+    removeQuestionFromCategory,
     addFavouriteQuestion,
     removeFavouriteQuestion,
-    onFavouriteQuestionsChange
+    removeFavouriteQuestionFromState
   }, dispatch);
 }
 
@@ -146,8 +133,8 @@ const withConnect =  connect(mapStateToProps, mapDispatchToProps)(QuestionDetail
 
 const enhancedQuestionDetailPage = compose(
   withUser,
-  withQuestionCategory,
   withCurrentQuestion,
+  withFavouriteQuestionResourcer,
   withFavouriteQuestion
 )(withConnect);
 
