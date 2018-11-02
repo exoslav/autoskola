@@ -5,19 +5,13 @@ import { bindActionCreators } from 'redux';
 import queryString  from 'query-string';
 
 import compose from '../../utils/compose';
-import withFavouriteQuestion from './withFavouriteQuestion';
 import withCurrentQuestion from './withCurrentQuestion';
 import withUser from '../../components/hoc/withUser';
-import withFavouriteQuestionResourcer from '../../components/hoc/withFavouriteQuestionResourcer';
 import {
   getQuestions,
   removeQuestionsFromCategory
 } from '../../redux/reducers/questionsReducer';
-import {
-  addFavouriteQuestion,
-  removeFavouriteQuestion,
-  removeFavouriteQuestionFromState
-} from '../../redux/reducers/favouriteQuestionsReducer';
+import { saveTest } from '../../redux/reducers/testReducer';
 
 class TestPage extends React.Component {
   constructor() {
@@ -85,6 +79,15 @@ class TestPage extends React.Component {
     this.setState({ showResult: true });
   }
 
+  handleOnSaveTest() {
+    const testToSave = {
+      id: 123,
+      questions: this.state.answeredQuestions
+    };
+
+    this.props.saveTest(this.props.user.uid, testToSave);
+  }
+
   render() {
     const { questions } = this.props;
     const { activeQuestion } = this.state;
@@ -140,6 +143,16 @@ class TestPage extends React.Component {
             }
           </ul>
         }
+
+        {
+          this.state.showResult &&
+          <button
+            type="button"
+            onClick={() => this.handleOnSaveTest()}
+          >
+            Ulozit tento test
+          </button>
+        }
       </Fragment>
     );
   }
@@ -170,9 +183,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     getQuestions,
     removeQuestionsFromCategory,
-    addFavouriteQuestion,
-    removeFavouriteQuestion,
-    removeFavouriteQuestionFromState
+    saveTest
   }, dispatch);
 }
 
@@ -180,9 +191,7 @@ const withConnect =  connect(mapStateToProps, mapDispatchToProps)(TestPage);
 
 const enhancedQuestionDetailPage = compose(
   withUser,
-  withCurrentQuestion,
-  withFavouriteQuestionResourcer,
-  withFavouriteQuestion
+  withCurrentQuestion
 )(withConnect);
 
 export default enhancedQuestionDetailPage;

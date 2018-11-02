@@ -7,8 +7,10 @@ import removeFavouriteQuestion from './removeFavouriteQuestion';
 import addFavouriteQuestion from './addFavouriteQuestion';
 import watchFavouriteQuestionChange from './watchFavouriteQuestionChange';
 import watchFavouriteQuestionsChange from './watchFavouriteQuestionsChange';
+import saveTest from './saveTest';
 
 export default {
+  saveTest,
   createUser,
   setPersistence,
   onAuthStateChanged,
