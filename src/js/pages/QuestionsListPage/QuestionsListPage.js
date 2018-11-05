@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
+import css from './QuestionsListPageStyles.scss';
+
 import QuestionListItem from '../../components/QuestionListItem/QuestionListItem';
 import { getQuestions, removeQuestionsFromCategory } from '../../redux/reducers/questionsReducer';
 
@@ -20,15 +22,36 @@ class QuestionsListPage extends React.Component {
     const { name, perex, questions } = this.props.questionCategory;
 
     return (
-      <div>
-        <h1>{name}</h1>
+      <div className="list-page__wrapper">
+        <h1 className="list-page__header">{name}</h1>
 
         <p>{perex}</p>
 
-        <ul>
-          <Link to={`/test?kategorie=${this.props.questionCategory.id}`}>Spustit test od první otázky</Link>
-          <li>Spustit test a otázky setřídit náhodně</li>
-          <li>Nastavit si vlastní test ze zobrazených otázek</li>
+        <ul className="list-page__run-test">
+          <li className="list-page__run-test__item">
+            <Link
+              className="list-page__run-test__link"
+              to={`/test?kategorie=${this.props.questionCategory.id}`}
+            >
+              Spustit test od první otázky
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="list-page__run-test__link"
+              to={`/test?kategorie=${this.props.questionCategory.id}`}
+            >
+              Spustit test a otázky setřídit náhodně
+            </Link>
+          </li>
+          <li>
+            <Link
+              className="list-page__run-test__link"
+              to={`/test?kategorie=${this.props.questionCategory.id}`}
+            >
+              Nastavit si vlastní test ze zobrazených otázek
+            </Link>
+          </li>
         </ul>
 
         {

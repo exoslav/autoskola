@@ -1,0 +1,11 @@
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+	padding: 10px;
+	border: 1px solid $lightBrown;
+}
+
+.froms__label {
+	display: flex;
+	cursor: pointer;
+}

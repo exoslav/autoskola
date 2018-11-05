@@ -1,6 +1,7 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import withTranslationsContext from '../../withTranslationsContext';
+import LoginFormStyles from './LoginFormStyles.scss';
 
 class LoginForm extends React.Component {
   constructor() {
@@ -41,7 +42,7 @@ class LoginForm extends React.Component {
     const { authInProgress, translations, error, signInType, signUpType } = this.props;
 
     return (
-      <Fragment>
+      <div className="login-form__wrapper">
         {
           authInProgress &&
           <div>Loading...</div>
@@ -51,19 +52,39 @@ class LoginForm extends React.Component {
           action=""
           onSubmit={e => e.preventDefault()}
         >
+        <div className="froms__field-wrap">
+          <label
+            className="froms__label"
+            for="login-form-email"
+          >
+            E-mail:
+          </label>
           <input
+            id="login-form-email"
+            className="froms__input-email"
             type="email"
             name="login-form-email"
             value={this.state.email}
             onChange={this.handleOnNameChange}
-          />
+            />
+        </div>
 
+        <div className="froms__field-wrap">
+          <label
+            className="froms__label"
+            for="login-form-password"
+          >
+            Heslo:
+          </label>
           <input
+            id="login-form-password"
+            className="froms__input-password"
             type="password"
             name="login-form-password"
             value={this.state.password}
             onChange={this.handleOnPasswordChange}
           />
+        </div>
 
           <button
             type="submit"
@@ -89,7 +110,7 @@ class LoginForm extends React.Component {
           error && error.type === signUpType &&
           <p>{`${translations.errorWhenSignUp}: ${error.message}`}</p>
         }
-      </Fragment>
+      </div>
     );
   }
 }

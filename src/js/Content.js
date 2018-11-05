@@ -2,12 +2,12 @@ import React, { Fragment } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux'
 
+import Container from './components/Container/Container';
 import TestPage from './pages/TestPage/TestPage';
 import QuestionsListPage from './pages/QuestionsListPage/QuestionsListPage';
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage';
 import FavouriteQuestionsPage from './pages/FavouriteQuestionsPage/FavouriteQuestionsPage';
 import HomePage from './pages/HomePage';
-import LoginFormContainer from './components/LoginForm/LoginFormContainer';
 import Header from './components/Header/Header';
 
 class Content extends React.Component {
@@ -16,32 +16,38 @@ class Content extends React.Component {
       <Fragment>
         <Header user={this.props.user} />
 
+        <Route
+          exact
+          path="/"
+          component={HomePage}
+        />
+          
         {
-          !this.props.user &&
-          <LoginFormContainer user={this.props.user} />
+          this.props.location.pathname !== '/' &&
+          <Container classNames="app-content">
+            <Route
+              path="/oblibene-otazky"
+              component={FavouriteQuestionsPage}
+            />
+
+            <Route
+              exact
+              path="/otazky/:categoryId"
+              component={QuestionsListPage}
+            />
+
+            <Route
+              exact
+              path="/otazky/:categoryId/:questionId"
+              component={QuestionDetailPage}
+            />
+
+            <Route
+              path="/test"
+              component={TestPage}
+            />
+          </Container>
         }
-
-        <Route
-          path="/oblibene-otazky"
-          component={FavouriteQuestionsPage}
-        />
-
-        <Route
-          exact
-          path="/otazky/:categoryId"
-          component={QuestionsListPage}
-        />
-
-        <Route
-          exact
-          path="/otazky/:categoryId/:questionId"
-          component={QuestionDetailPage}
-        />
-
-        <Route
-          path="/test"
-          component={TestPage}
-        />
 
         {/*<Route*/}
           {/*path="/test"*/}
@@ -52,8 +58,6 @@ class Content extends React.Component {
             {/*/>*/}
           {/*)}*/}
         {/*/>*/}
-
-        <Route exact path="/" component={HomePage} />
       </Fragment>
     );
   }

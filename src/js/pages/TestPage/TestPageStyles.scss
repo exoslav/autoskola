@@ -1,0 +1,53 @@
+@import '../../../scss/constants.scss';
+
+.test__wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+    .test__active-question {
+      flex: 5;
+      padding-right: 20px;
+    }
+        .test__active-question__title {
+          margin-bottom: 10px;
+          font-size: 20px;
+          font-weight: 700;
+        }
+        .test__active-question__answer-list {
+          list-style-type: decimal;
+        }
+            .test__active-question__item {
+              padding: 15px;
+              font-size: 15px;
+              cursor: pointer;
+
+              &:hover {
+                background: $green;
+              }
+            }
+
+    .test__thumb-list {
+      flex: 2;
+      list-style-type: decimal;
+    }
+        .test__thumb-list__label {
+          display: flex;
+          margin-bottom: 10px;
+        }
+        .test__thumb-list__item {
+          padding: 15px;
+          font-size: 15px;
+          cursor: pointer;
+
+          &:hover {
+            background: $green;
+          }
+        }
+        .test__thumb-list__item--active {
+          background: $green;
+        }
+
+    .test__footer {
+      flex-basis: 100%;
+    }

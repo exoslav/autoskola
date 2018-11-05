@@ -68,10 +68,8 @@ class QuestionDetailPage extends React.Component {
     const { currentQuestion, user } = this.props;
     const { id, question, answers, correctAnswer, prevQuestion } = currentQuestion;
 
-    console.log(prevQuestion);
-
     return (
-      <div>
+      <Fragment>
         <h1>{`Otázka {${id}}: ${question}`}</h1>
         <ol>
           {
@@ -98,7 +96,7 @@ class QuestionDetailPage extends React.Component {
             icon={[this.props.favourite ? 'fas' : 'far', 'star']}
           />
         }
-      </div>
+      </Fragment>
     );
   }
 }

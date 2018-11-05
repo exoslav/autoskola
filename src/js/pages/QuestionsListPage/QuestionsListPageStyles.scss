@@ -1,0 +1,21 @@
+@import '../../../scss/constants.scss';
+
+.list-page__wrapper {
+}
+
+    .list-page__header {
+      text-align: center;
+    }
+
+    .list-page__run-test {
+      display: flex;
+      justify-content: space-between;
+      margin: 15px 0;
+    }
+
+        .list-page__run-test__link {
+          display: flex;
+          padding: 15px;
+          color: #fff;
+          background: $darkBrown;
+        }

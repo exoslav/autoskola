@@ -1,0 +1,23 @@
+@import '../../../scss/constants.scss';
+
+.header {
+	background: $darkBrown;
+}
+
+		.header__container {
+			position: relative;
+			display: flex;
+			align-items: center;
+			padding: 20px;
+		}
+
+				.header__login-block {
+					display: flex;
+					flex: 1;
+					justify-content: flex-end;
+					color: #fff;
+				}
+
+						.header__login-block__login-link {
+							color: #fff;
+						}

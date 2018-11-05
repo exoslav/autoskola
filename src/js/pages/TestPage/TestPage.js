@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import queryString  from 'query-string';
 
+import css  from './TestPageStyles.scss';
+
 import compose from '../../utils/compose';
 import withCurrentQuestion from './withCurrentQuestion';
 import withUser from '../../components/hoc/withUser';
@@ -93,28 +95,18 @@ class TestPage extends React.Component {
     const { activeQuestion } = this.state;
 
     return (
-      <Fragment>
-        {
-          questions.length > 0 &&
-          <ol className="test__thumb-list">
-            {
-              questions.map(q => (
-                <li onClick={() => this.setActiveQuestion(q)}>
-                  {q.question}
-                </li>
-              ))
-            }
-          </ol>
-        }
-
+      <div className="test__wrapper">
         <div className="test__active-question">
           {
             activeQuestion &&
             <div>
-              <h2>{activeQuestion.question}</h2>
-              <ol>
+              <h1 className="test__active-question__title">{activeQuestion.question}</h1>
+              <ol className="test__active-question__answer-list">
                 {activeQuestion.answers.map((answer, index) => (
-                  <li onClick={() => this.handleAnswerClick(answer, index)}>
+                  <li
+                    className="test__active-question__item"
+                    onClick={() => this.handleAnswerClick(answer, index)}
+                  >
                     {answer}
                   </li>
                 ))}
@@ -123,37 +115,60 @@ class TestPage extends React.Component {
           }
         </div>
 
-        <button
-          onClick={() => this.calculateResult()}
-          type="button"
-        >
-          Vyhodnotit test
-        </button>
-
         {
-          this.state.showResult &&
-          <ul>
+          questions.length > 0 &&
+          this.state.activeQuestion &&
+          <ol className="test__thumb-list">
+            <strong className="test__thumb-list__label">Seznam otázek v testu:</strong>
             {
-              this.state.answeredQuestions.map(q => (
-                <li>
-                  <strong>{q.question}</strong>
-                  <span>{q.correct ? 'Spravne': 'Spatne'}</span>
+              questions.map(q => (
+                <li
+                  className={`
+                  ${this.state.activeQuestion.id === q.id
+                    ? 'test__thumb-list__item--active' : ''
+                  } test__thumb-list__item`}
+                  onClick={() => this.setActiveQuestion(q)}
+                >
+                  <span>{q.question}</span>
                 </li>
               ))
             }
-          </ul>
+          </ol>
         }
 
-        {
-          this.state.showResult &&
+        <div className="test__footer">
           <button
+            onClick={() => this.calculateResult()}
             type="button"
-            onClick={() => this.handleOnSaveTest()}
           >
-            Ulozit tento test
+            Vyhodnotit test
           </button>
-        }
-      </Fragment>
+
+          {
+            this.state.showResult &&
+            <ul>
+              {
+                this.state.answeredQuestions.map(q => (
+                  <li>
+                    <strong>{q.question}</strong>
+                    <span>{q.correct ? 'Spravne': 'Spatne'}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          }
+
+          {
+            this.state.showResult &&
+            <button
+              type="button"
+              onClick={() => this.handleOnSaveTest()}
+            >
+              Ulozit tento test
+            </button>
+          }
+        </div>
+      </div>
     );
   }
 }

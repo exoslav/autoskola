@@ -2,30 +2,73 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import css from './HeaderStyles.scss';
+
+import Logo from '../Logo/Logo';
+import Container from '../Container/Container';
+import LoginFormContainer from '../LoginForm/LoginFormContainer';
 import withTranslationsContext from '../../withTranslationsContext';
 
 class Header extends React.PureComponent {
+  constructor() {
+    super();
+
+    this.state = {
+      loginFormOpen: false
+    };
+
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.user !== prevProps.user) {
+      this.setState({ loginFormOpen: false });
+    }
+  }
+
+  handleLoginClick(e) {
+    e.preventDefault();
+
+    this.setState(prevState => ({ loginFormOpen: !prevState.loginFormOpen }));
+  }
+
   render() {
     return (
-      <header>
-        <h1>
-          <Link to="/">
-            Autoškola
-          </Link>
-        </h1>
-        {
-          this.props.user &&
-          <div>
-            {this.props.translations.signInAs}: {this.props.user.email}
-          </div>
-        }
+      <header className="header">
+        <Container classNames="header__container">
+          <Logo />
 
-        {
-          this.props.user &&
-          <Link to="/oblibene-otazky">
-            Oblíbené otázky
-          </Link>
-        }
+          <div className="header__login-block">
+            {
+              !this.props.user &&
+              <a
+                className="header__login-block__login-link"
+                href="#"
+                onClick={(e) => this.handleLoginClick(e)}
+              >
+                Přihlášení
+              </a>
+            }
+
+            {
+              this.props.user &&
+              <div>
+                <div>
+                  {this.props.translations.signInAs}: {this.props.user.email}
+                </div>
+
+                <Link to="/oblibene-otazky">
+                  Oblíbené otázky
+                </Link>
+              </div>
+            }
+          </div>
+
+          {
+            this.state.loginFormOpen &&
+            <LoginFormContainer />
+          }
+        </Container>
       </header>
     );
   }
