@@ -3,19 +3,92 @@
 .list-page__wrapper {
 }
 
-    .list-page__header {
+    .list-page__header-title {
       text-align: center;
     }
 
-    .list-page__run-test {
+    .list-page__header {
       display: flex;
-      justify-content: space-between;
-      margin: 15px 0;
+    }
+        .list-page__header__perex {
+          flex: 2;
+        }
+        .list-page__run-test {
+          display: flex;
+          flex: 1;
+          justify-content: space-between;
+          flex-direction: column;
+        }
+            .list-page__run-test__link {
+              display: flex;
+              padding: 15px;
+              color: $fontColor;
+              background: #fff;
+              border-left: 3px solid #008df5;
+            }
+
+    .list-page__loader {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+        .list-page__loader__label {
+          font-size: 20px;
+        }
+
+    .list-page__list-header {
+      display: flex;
+      padding: 15px 30px;
+      border-bottom: 2px solid darken(#e5e7e8, 15%);
     }
 
-        .list-page__run-test__link {
-          display: flex;
-          padding: 15px;
-          color: #fff;
-          background: $darkBrown;
+    .list-page__questions-list--grid-view {
+      display: flex;
+      flex-wrap: wrap;
+
+      .question-list-item {
+        flex-basis: 33%;
+
+        .question-list-item__link {
+          flex-direction: column;
+
+          .question-list-item__item-id {
+            flex-basis: auto;
+          }
+          .question-list-item__title {
+            flex: 0;
+          }
+          .question-list-item__icons {
+            align-self: flex-end;
+            flex-basis: auto;
+          }
         }
+      }
+    }
+
+        .list-page__list-header__question-id {
+          flex-basis: 150px;
+        }
+        .list-page__list-header__question-title {
+          flex: 1;
+        }
+        .list-page__list-header__grid-view,
+        .list-page__list-header__lines-view {
+          margin: 0 5px;
+          padding: 0;
+          background: none;
+
+          &:hover {
+            background: none;
+          }
+        }
+            .list-page__list-header__grid-view__icon,
+            .list-page__list-header__lines-view__icon {
+              color: $fontColor;
+              font-size: 25px;
+            }
+            .list-page__list-header__grid-view__icon--active,
+            .list-page__list-header__lines-view__icon--active {
+              color: #008df5;
+            }

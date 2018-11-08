@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 
-import DrivingLicences  from './DrivingLicences';
+import DrivingLicences  from './DrivingFields';
 
-class DrivingLicencesContainer extends React.Component {
+class DrivingFieldsContainer extends React.Component {
   render() {
     return (
       <DrivingLicences questionFields={this.props.questions} />
@@ -12,11 +12,11 @@ class DrivingLicencesContainer extends React.Component {
   }
 }
 
-DrivingLicencesContainer.defaultProps = {
+DrivingFieldsContainer.defaultProps = {
   questions: []
 };
 
-DrivingLicencesContainer.propTypes = {
+DrivingFieldsContainer.propTypes = {
   questions: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -32,4 +32,4 @@ const mapStateToProps = (state) => {
   };
 }
 
-export default connect(mapStateToProps)(DrivingLicencesContainer);
+export default connect(mapStateToProps)(DrivingFieldsContainer);

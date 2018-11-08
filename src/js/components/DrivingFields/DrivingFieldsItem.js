@@ -3,37 +3,39 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import css from './DrivingLicencesItemStyles.scss';
+import css from './DrivingFieldsItem.scss';
 
-class QuestionFieldsItem extends React.PureComponent {
+class DrivingFieldsItem extends React.PureComponent {
   render() {
     const { name, icon, link } = this.props;
 
     return (
-      <li className="driving-licenses__item">
+      <li className="driving-fields__item">
         <Link
           to={link}
-          className="driving-licenses__link"
+          className="driving-fields__link"
         >
           <FontAwesomeIcon
-            className="driving-licenses__icon"
+            className="driving-fields__icon"
             icon={icon}
           />
-          <h3 className="driving-licenses__title">{name}</h3>
+          <div className="driving-fields__title-wrap">
+            <h3 className="driving-fields__title">{name}</h3>
+          </div>
         </Link>
       </li>
     );
   }
 }
 
-QuestionFieldsItem.defaultProps = {
+DrivingFieldsItem.defaultProps = {
   categoryItem: null
 };
 
-QuestionFieldsItem.propTypes = {
+DrivingFieldsItem.propTypes = {
   name: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired
 };
 
-export default QuestionFieldsItem;
+export default DrivingFieldsItem;

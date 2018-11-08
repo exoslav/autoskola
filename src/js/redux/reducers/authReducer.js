@@ -2,7 +2,7 @@ import FirebaseActions from '../../firebase';
 
 const initState = {
   authInProgress: false,
-  error: false,
+  error: null,
   user: null
 }
 
@@ -13,6 +13,7 @@ const AUTH_USER_REQUEST = 'auth/AUTH_USER_REQUEST';
 const AUTH_USER_ERROR = 'auth/AUTH_USER_ERROR';
 const AUTH_USER_LOGGED_IN = 'auth/AUTH_USER_LOGGED_IN';
 const AUTH_USER_LOGGED_OUT = 'auth/AUTH_USER_LOGGED_OUT';
+const REMOVE_AUTH_ERRORS = 'auth/REMOVE_AUTH_ERRORS';
 
 export const authStateController = (currentUser) => (dispatch) => {
   const onUserLogIn = (user) => dispatch({ type: AUTH_USER_LOGGED_IN, payload: user });
@@ -55,6 +56,10 @@ export const signInUser = (email, password) => (dispatch) => {
 
       throwAuthUserError(dispatch, errorObj);
     });
+}
+
+export const removeAuthErrors = () => (dispatch) => {
+  dispatch({ type: REMOVE_AUTH_ERRORS, payload: null });
 }
 
 function createErrorObj(type, code, message) {
@@ -102,13 +107,18 @@ export default (state = initState, action) => {
       return {
         ...state,
         user: action.payload,
-        error: false,
+        error: null,
         authInProgress: false
       }
     case AUTH_USER_LOGGED_OUT:
       return {
         ...state,
         user: null
+      }
+    case REMOVE_AUTH_ERRORS:
+      return {
+        ...state,
+        error: null
       }
     default:
       return state;

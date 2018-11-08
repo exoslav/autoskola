@@ -78,7 +78,15 @@ class TestPage extends React.Component {
   }
 
   calculateResult() {
-    this.setState({ showResult: true });
+    if (this.props.questions.length !== this.state.answeredQuestions.length) {
+      if (confirm("Neodpověděli jste na všechny otázky, chcete přesto vyhodnotit test?")) {
+        this.setState({ showResult: true });
+      } else {
+        this.setState({ showResult: false });
+      }
+    } else {
+      this.setState({ showResult: true });
+    }
   }
 
   handleOnSaveTest() {
@@ -143,6 +151,14 @@ class TestPage extends React.Component {
           >
             Vyhodnotit test
           </button>
+
+          {
+            this.state.showResult &&
+            this.props.questions.length !== this.state.answeredQuestions.length &&
+            <strong>
+              {`Odpověděli jste na ${this.state.answeredQuestions.length} otázek z ${this.props.questions.length}.`}
+            </strong>
+          }
 
           {
             this.state.showResult &&

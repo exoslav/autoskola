@@ -1,21 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import css  from './DrivingLicences.scss';
+import css  from './DrivingFields.scss';
 
 import Container  from '../Container/Container';
-import DrivingLicencesItem  from './DrivingLicencesItem';
+import DrivingLicencesItem  from './DrivingFieldsItem';
 
-class TestsByQuestionFields extends React.Component {
+class DrivingFields extends React.Component {
   render() {
     return (
-      <div className="driving-licenses">
+      <div className="driving-fields">
         <Container>
-          <h2 className="driving-licenses__header">Projděte si jednotlivé okruhy otázek:</h2>
+          <h2 className="driving-fields__header">Projděte si otázky dle kategorií řidičských oprávnění</h2>
 
           {
             this.props.questionFields.length > 0 &&
-            <ul className="driving-licenses__list">
+            <ul className="driving-fields__list">
               {
                 this.props.questionFields.map((categoryItem) => {
                   const {name, licenseId, icon, link} = categoryItem;
@@ -37,11 +37,11 @@ class TestsByQuestionFields extends React.Component {
   }
 }
 
-TestsByQuestionFields.defaultProps = {
+DrivingFields.defaultProps = {
   questionFields: []
 };
 
-TestsByQuestionFields.propTypes = {
+DrivingFields.propTypes = {
   questionFields: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
@@ -51,4 +51,4 @@ TestsByQuestionFields.propTypes = {
   )
 };
 
-export default TestsByQuestionFields;
+export default DrivingFields;

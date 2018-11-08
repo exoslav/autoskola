@@ -1,7 +1,7 @@
 @import '../../../scss/constants.scss';
 
 .header {
-	background: $darkBrown;
+	background: #008df5;
 }
 
 		.header__container {
@@ -21,3 +21,7 @@
 						.header__login-block__login-link {
 							color: #fff;
 						}
+
+								.header__login-block__user-icon {
+									margin-right: 10px;
+								}

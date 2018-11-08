@@ -2,13 +2,13 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import TestsByLicenseCategoryContainer from '../components/TestsByLicenseCategoryContainer';
-import DrivingLicencesContainer from '../components/DrivingLicences/DrivingLicencesContainer';
+import DrivingFieldsContainer from '../components/DrivingFields/DrivingFieldsContainer';
 
 class HomePage extends React.Component {
   render() {
     return (
       <Fragment>
-        <DrivingLicencesContainer />
+        <DrivingFieldsContainer />
         {/* <TestsByLicenseCategoryContainer /> */}
       </Fragment>
     );

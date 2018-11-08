@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import css from './HeaderStyles.scss';
+import css from './Header.scss';
 
 import Logo from '../Logo/Logo';
 import Container from '../Container/Container';
 import LoginFormContainer from '../LoginForm/LoginFormContainer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import withTranslationsContext from '../../withTranslationsContext';
 
 class Header extends React.PureComponent {
@@ -46,7 +47,11 @@ class Header extends React.PureComponent {
                 href="#"
                 onClick={(e) => this.handleLoginClick(e)}
               >
-                Přihlášení
+                <FontAwesomeIcon
+                  icon="user"
+                  className="header__login-block__user-icon"
+                />
+                <span>Přihlášení</span>
               </a>
             }
 
