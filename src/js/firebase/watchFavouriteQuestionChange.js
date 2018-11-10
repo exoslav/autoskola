@@ -1,5 +1,4 @@
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
 
 export const watchFavouriteQuestionChange = (userId, questionId, callBack) => {
   const db = firebase.firestore();

@@ -1,0 +1,30 @@
+/* SHOULD BE MOVED TO COMPONENT */
+.answer__title {
+  display: flex;
+  padding: 15px 30px;
+  border-bottom: 2px solid #bcc2c4;
+}
+
+.answers-list {
+
+}
+    .answers-list__answer-item {
+      display: flex;
+      padding: 15px 30px;
+      line-height: 150%;
+      cursor: pointer;
+      border-left: 3px solid transparent;
+
+      &:hover {
+        border-left: 3px solid #008df5;
+      }
+    }
+        .answers-list__answer-index {
+          flex-basis: 25px;
+          font-weight: 700;
+          color: #a5a5a5;
+        }
+
+        .answers-list__answer-text {
+          flex: 1;
+        }

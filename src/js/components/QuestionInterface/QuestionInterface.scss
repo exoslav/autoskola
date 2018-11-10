@@ -1,0 +1,27 @@
+.question-interface {
+}
+
+.question-interface--loading {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.75);
+  }
+}
+
+.question-interface__loader {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: 0;
+  right: 0;
+}
+
+.question-interface__submit-note {
+
+}

@@ -1,8 +1,9 @@
 import * as firebase from 'firebase/app';
-import 'firebase/firestore';
 
 export const getQuestion = (collectionId, questionId) => {
   const db = firebase.firestore();
+
+  console.log(db);
 
   db.settings({
     timestampsInSnapshots: true

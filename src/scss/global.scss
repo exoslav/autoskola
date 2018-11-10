@@ -10,12 +10,14 @@ p, a, strong, h1, h2, h3, h4, h5 {
 }
 
 h1, h2, h3, h4, h5 {
+	padding: 15px 30px;
+	border-bottom: 2px solid #bcc2c4;
 	font-weight: 400;
 }
 
 h1 {
-	font-size: 30px;
 	margin-bottom: 1.5em;
+	font-size: 23px;
 }
 
 h2 {

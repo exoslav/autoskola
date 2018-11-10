@@ -1,5 +1,4 @@
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
 
 export const saveTest = (userId, test) => {
   const db = firebase.firestore();

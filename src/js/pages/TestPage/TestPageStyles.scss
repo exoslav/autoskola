@@ -10,9 +10,12 @@
       padding-right: 20px;
     }
         .test__active-question__title {
-          margin-bottom: 10px;
-          font-size: 20px;
+          display: flex;
+          margin-bottom: 0;
+          padding: 15px 30px;
+          font-size: 16px;
           font-weight: 700;
+          border-bottom: 2px solid #bcc2c4;
         }
         .test__active-question__answer-list {
           list-style-type: decimal;
@@ -27,26 +30,45 @@
               }
             }
 
-    .test__thumb-list {
+    .test__thumb-list__wrapper {
       flex: 2;
-      list-style-type: decimal;
     }
-        .test__thumb-list__label {
-          display: flex;
-          margin-bottom: 10px;
+        .test__thumb-list {
+          max-height: 50vh;
+          overflow: auto;
         }
-        .test__thumb-list__item {
-          padding: 15px;
-          font-size: 15px;
-          cursor: pointer;
+            .test__thumb-list__label {
+              display: flex;
+              padding: 15px 30px;
+              border-bottom: 2px solid #bcc2c4;
+            }
+            .test__thumb-list__item {
+              display: flex;
+              padding: 15px;
+              font-size: 15px;
+              line-height: 150%;
+              border-left: 3px solid transparent;
+              cursor: pointer;
 
-          &:hover {
-            background: $green;
-          }
-        }
-        .test__thumb-list__item--active {
-          background: $green;
-        }
+              &:nth-child(even) {
+                background: #e5e7e8;
+              }
+
+              &:hover {
+                border-color: #008df5;
+              }
+            }
+            .test__thumb-list__item--active {
+              border-color: #008df5;
+            }
+                .test__thumb-list__item__index {
+                  flex-basis: 25px;
+                  font-weight: 700;
+                  color: #a5a5a5;
+                }
+                .test__thumb-list__item__name {
+                  flex: 1;
+                }
 
     .test__footer {
       flex-basis: 100%;

@@ -1,4 +1,5 @@
 import createUser from './createUser';
+import saveQuestion from './saveQuestion';
 import setPersistence from './setPersistence';
 import onAuthStateChanged from './onAuthStateChanged';
 import initializeFirebaseApp from './initializeFirebaseApp';
@@ -12,6 +13,7 @@ import saveTest from './saveTest';
 export default {
   saveTest,
   createUser,
+  saveQuestion,
   setPersistence,
   onAuthStateChanged,
   initializeFirebaseApp,

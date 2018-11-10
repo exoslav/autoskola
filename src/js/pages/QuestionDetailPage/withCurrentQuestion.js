@@ -14,7 +14,10 @@ export default (BaseComponent) => {
   }
 
   const mapStateToProps = (state) => {
-    return { currentQuestion: state.questions.currentQuestion };
+    return {
+      currentQuestion: state.questions.currentQuestion,
+      currentQuestionLoading: state.questions.fetching
+    };
   }
 
   return connect(mapStateToProps)(withCurrentQuestion);

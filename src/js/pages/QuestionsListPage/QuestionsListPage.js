@@ -132,6 +132,7 @@ class QuestionsListPage extends React.Component {
                   id={q.id}
                   question={q.question}
                   favourite={q.favourite}
+                  note={q.note}
                   link={`${this.props.match.params.categoryId}/${q.id}`}
                 />
               ))
@@ -158,7 +159,8 @@ function fetchCategory(fields = [], currentId) {
 function fetchFavourites(questions = [], favourites = []) {
   return questions.map((q) => ({
     ...q,
-    favourite: !!favourites.find(fq => fq.id === q.id)
+    note: !!favourites.find(fq => (fq.id === q.id) && fq.note),
+    favourite: !!favourites.find(fq => (fq.id === q.id) && fq.favourite)
   }))
 }
 

@@ -1,5 +1,4 @@
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
 
 const EMAIL_IN_USE_ALREADY = 'auth/email-already-in-use';
 const INVALID_EMAIL = 'auth/invalid-email';

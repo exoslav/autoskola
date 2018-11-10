@@ -20,7 +20,7 @@ class DrivingFieldsItem extends React.PureComponent {
             icon={icon}
           />
           <div className="driving-fields__title-wrap">
-            <h3 className="driving-fields__title">{name}</h3>
+            <span className="driving-fields__title">{name}</span>
           </div>
         </Link>
       </li>

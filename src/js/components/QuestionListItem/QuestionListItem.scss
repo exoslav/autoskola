@@ -13,7 +13,7 @@
 
       &:hover {
         text-decoration: none;
-        border-left: 3px solid #008df5;
+        border-color: #008df5;
       }
     }
         .question-list-item__item-id {
@@ -22,13 +22,10 @@
         }
         .question-list-item__title {
           flex: 1;
+          margin-right: 20px;
         }
         .question-list-item__icons {
           display: flex;
           flex-basis: 80px;
-          justify-content: flex-end;
+          justify-content: space-around;
         }
-           .question-list-item__icon-favourite {
-             font-size: 20px;
-             color: #ffd600;
-           }

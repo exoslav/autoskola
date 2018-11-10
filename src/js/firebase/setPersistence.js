@@ -1,5 +1,4 @@
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
 
 const setPersistence = () => {
   firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE)

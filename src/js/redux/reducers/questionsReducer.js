@@ -1,5 +1,6 @@
 import { getQuestion as getQuestionFromDb }  from '../../firebase/getQuestion';
 import getQuestionsCollections  from '../../firebase/getQuestionsCollections';
+import FirebaseActions from '../../firebase';
 
 const initState = {
   fetching: true,
@@ -7,7 +8,7 @@ const initState = {
     {
       id: 'pravidla-provozu',
       name: 'Pravidla provozu na pozemních komunikacích',
-      icon: 'motorcycle',
+      icon: 'traffic-light',
       link: '/otazky/pravidla-provozu',
       perex: 'Otázky oheldně pravidel silničního provozu.',
       questions: []
@@ -15,7 +16,7 @@ const initState = {
     {
       id: 'dopravni-znacky',
       name: 'Dopravní značky',
-      icon: 'car-side',
+      icon: 'sign',
       link: '/otazky/dopravni-znacky',
       perex: 'Otázky ohledně dopravních značek.',
       questions: []
@@ -23,7 +24,7 @@ const initState = {
     {
       id: 'pravidla-bezpecne-jizdy',
       name: 'Zásady bezpečné jízdy',
-      icon: 'truck',
+      icon: 'car-crash',
       link: '/otazky/pravidla-bezpecne-jizdy',
       perex: 'Otázky ohledně bezpečné jízdy.',
       questions: []
@@ -39,7 +40,7 @@ const initState = {
     {
       id: 'predpisy-provozu-vozidel',
       name: 'Předpisy o podmínkách provozu vozidel',
-      icon: 'bus',
+      icon: 'car-battery',
       link: '/otazky/predpisy-provozu-vozidel',
       perex: 'Otázky ohledně předpisů vozidel.',
       questions: []
@@ -47,7 +48,7 @@ const initState = {
     {
       id: 'predpisy-souvisejici-s-provozem',
       name: 'Předpisy související s provozem',
-      icon: 'bus',
+      icon: 'chalkboard-teacher',
       link: '/otazky/predpisy-souvisejici-s-provozem',
       perex: 'Předpisy související s provozem.',
       questions: []
@@ -55,7 +56,7 @@ const initState = {
     {
       id: 'zdravotnicka-priprava',
       name: 'Zdravotnická příprava',
-      icon: 'bus',
+      icon: 'briefcase-medical',
       link: '/otazky/zdravotnicka-priprava',
       perex: 'Otázky ohledně zdravotnické přípravy.',
       questions: []

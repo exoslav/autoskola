@@ -74,12 +74,18 @@ class LoginForm extends React.Component {
 
             {
               error.type === signInType &&
-              <p className="login-form__error__text">{`${translations.errorWhenSignIn}: ${error.message}`}</p>
+              <p className="login-form__error__text">
+                <strong className="login-form__error__text__label">{translations.errorWhenSignIn}:</strong>
+                <span>{error.message}</span>
+              </p>
             }
 
             {
               error.type === signUpType &&
-              <p className="login-form__error__text">{`${translations.errorWhenSignUp}: ${error.message}`}</p>
+              <p className="login-form__error__text">
+                <strong className="login-form__error__text__label">{translations.errorWhenSignUp}:</strong>
+                <span>{error.message}</span>
+              </p>
             }
           </div>
         }
@@ -157,7 +163,8 @@ LoginForm.defaultProps = {
   translations: {
     signUp: 'Zaregistrovat se',
     signIn: 'Přihlásit se',
-    errorWhenLogin: 'Vyskytla se chyba při přihlašování'
+    errorWhenSignIn: 'Chyba při přihlašování',
+    errorWhenSignUp: 'Chyba při registraci'
   },
   signInUser: () => {},
   signUpUser: () => {}

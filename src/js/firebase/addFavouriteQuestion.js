@@ -1,5 +1,4 @@
 import * as firebase from 'firebase/app';
-import 'firebase/auth';
 
 const addFavouriteQuestion = (question, userId) => {
   const db = firebase.firestore();

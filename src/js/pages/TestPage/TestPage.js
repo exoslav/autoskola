@@ -9,6 +9,7 @@ import css  from './TestPageStyles.scss';
 import compose from '../../utils/compose';
 import withCurrentQuestion from './withCurrentQuestion';
 import withUser from '../../components/hoc/withUser';
+import AnswerListItem from '../../components/AnswerListItem/AnswerListItem';
 import {
   getQuestions,
   removeQuestionsFromCategory
@@ -111,38 +112,42 @@ class TestPage extends React.Component {
               <h1 className="test__active-question__title">{activeQuestion.question}</h1>
               <ol className="test__active-question__answer-list">
                 {activeQuestion.answers.map((answer, index) => (
-                  <li
-                    className="test__active-question__item"
-                    onClick={() => this.handleAnswerClick(answer, index)}
-                  >
-                    {answer}
-                  </li>
+                  <AnswerListItem
+                    key={index}
+                    index={index}
+                    answer={answer}
+                    onItemClick={this.handleAnswerClick}
+                  />
                 ))}
               </ol>
             </div>
           }
         </div>
 
-        {
-          questions.length > 0 &&
-          this.state.activeQuestion &&
-          <ol className="test__thumb-list">
-            <strong className="test__thumb-list__label">Seznam otázek v testu:</strong>
-            {
-              questions.map(q => (
-                <li
-                  className={`
+        <div className="test__thumb-list__wrapper">
+          <strong className="test__thumb-list__label">Seznam otázek v testu:</strong>
+
+          {
+            questions.length > 0 &&
+            this.state.activeQuestion &&
+            <ol className="test__thumb-list">
+              {
+                questions.map((q, index) => (
+                  <li
+                    className={`
                   ${this.state.activeQuestion.id === q.id
-                    ? 'test__thumb-list__item--active' : ''
-                  } test__thumb-list__item`}
-                  onClick={() => this.setActiveQuestion(q)}
-                >
-                  <span>{q.question}</span>
-                </li>
-              ))
-            }
-          </ol>
-        }
+                      ? 'test__thumb-list__item--active' : ''
+                      } test__thumb-list__item`}
+                    onClick={() => this.setActiveQuestion(q)}
+                  >
+                    <span className="test__thumb-list__item__index">{index}</span>
+                    <span className="test__thumb-list__item__name">{q.question}</span>
+                  </li>
+                ))
+              }
+            </ol>
+          }
+        </div>
 
         <div className="test__footer">
           <button

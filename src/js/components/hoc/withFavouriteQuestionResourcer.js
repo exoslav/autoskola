@@ -9,31 +9,38 @@ export default (BaseComponent) => {
     constructor() {
       super();
 
-      this.unsubscribeFunction = () => {};
+      this.unsubscribeFunction = null;
     }
 
     componentDidMount() {
-      const { user, currentQuestion } = this.props;
+      const { user, onFavouriteQuestionChange } = this.props;
 
-      if (user && currentQuestion) {
-        this.unsubscribeFunction = this.props.onFavouriteQuestionChange(user.uid, currentQuestion.id);
+      if (user) {
+        this.unsubscribeFunction = onFavouriteQuestionChange(
+          user.uid,
+          this.props.match.params.questionId
+        );
       }
     }
 
     componentDidUpdate() {
-      const { user, currentQuestion, favouriteQuestion } = this.props;
+      const { user, onFavouriteQuestionChange } = this.props;
 
       if (
         user &&
-        currentQuestion &&
-        !favouriteQuestion
+        typeof this.unsubscribeFunction !== 'function'
       ) {
-        this.unsubscribeFunction = this.props.onFavouriteQuestionChange(user.uid, currentQuestion.id);
+        this.unsubscribeFunction = onFavouriteQuestionChange(
+          user.uid,
+          this.props.match.params.questionId
+        );
       }
     }
 
     componentWillUnmount() {
-      this.unsubscribeFunction();
+      if (typeof this.unsubscribeFunction === 'function') {
+        this.unsubscribeFunction();
+      }
     }
 
     render() {
@@ -41,12 +48,16 @@ export default (BaseComponent) => {
         <BaseComponent
           {...this.props}
           favouriteQuestion={this.props.favouriteQuestion}
+          favouriteQuestionLoading={this.props.favouriteQuestionLoading}
         />
       );
     }
   }
 
-  const mapStateToProps = (state) => ({ favouriteQuestion: state.favouriteQuestions.currentFavouriteQuestion })
+  const mapStateToProps = (state) => ({
+    favouriteQuestion: state.favouriteQuestions.currentFavouriteQuestion,
+    favouriteQuestionLoading: state.favouriteQuestions.fetching
+  })
 
   const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({ onFavouriteQuestionChange }, dispatch);

@@ -59,7 +59,11 @@ class Header extends React.PureComponent {
               this.props.user &&
               <div>
                 <div>
-                  {this.props.translations.signInAs}: {this.props.user.email}
+                  <FontAwesomeIcon
+                    icon="user"
+                    className="header__login-block__user-icon"
+                  />
+                  <span>{this.props.user.email}</span>
                 </div>
 
                 <Link to="/oblibene-otazky">
