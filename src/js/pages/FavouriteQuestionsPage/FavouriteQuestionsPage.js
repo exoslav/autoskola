@@ -1,53 +1,62 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import compose from '../../utils/compose';
 import withUser from '../../components/hoc/withUser';
+import withDisplayView from '../../components/hoc/withDisplayView';
+import QuestionList from '../../components/QuestionList/QuestionList';
+import QuestionListHeader from '../../components/QuestionListHeader/QuestionListHeader';
 import withFavouriteQuestionsRecourcer from '../../components/hoc/withFavouriteQuestionsResourcer';
+import Loader from '../../components/Loader/Loader'
 
 class FavouriteQuestionsPage extends React.Component {
-  constructor() {
-    super();
-  }
-
   render() {
     return (
-      <div>
+      <Fragment>
+        <QuestionListHeader
+          displayView={this.props.displayView}
+          onDisplayViewChange={this.props.onDisplayViewChange}
+        />
+
         {
-          this.props.favouriteQuestions.length > 0 &&
-          <ul>
-            {
-              this.props.favouriteQuestions.map(favouriteQuestion => (
-                <li key={favouriteQuestion.id}>
-                  <Link to={`/otazky/${favouriteQuestion.categoryId}/${favouriteQuestion.id}`}>
-                    {favouriteQuestion.question}
-                  </Link>
-                </li>
-              ))
-            }
-          </ul>
+          this.props.favouriteQuestionsLoading &&
+          <div className="list-page__loader">
+            <Loader/>
+            <p className="list-page__loader__label">Načítá se seznam otázek</p>
+          </div>
         }
-      </div>
+
+        <QuestionList
+          items={this.props.favouriteQuestions}
+          displayView={this.props.displayView}
+        />
+      </Fragment>
     );
   }
 }
 
-FavouriteQuestionsPage.defaultProps = {
-  favouriteQuestions: []
-};
-
 FavouriteQuestionsPage.propTypes = {
+  displayView: PropTypes.string,
   favouriteQuestions: PropTypes.arrayOf(
     PropTypes.shape({})
-  )
+  ),
+  favouriteQuestionsLoading: PropTypes.bool,
+  onDisplayViewChange: PropTypes.func
+};
+
+FavouriteQuestionsPage.defaultProps = {
+  displayView: 'lines',
+  favouriteQuestions: [],
+  favouriteQuestionsLoading: false,
+  onDisplayViewChange: () => {}
 };
 
 const withConnect = FavouriteQuestionsPage;
 
 const enhancedQuestionDetailPage = compose(
   withUser,
-  withFavouriteQuestionsRecourcer
+  withFavouriteQuestionsRecourcer,
+  withDisplayView
 )(withConnect);
 
 export default enhancedQuestionDetailPage;

@@ -8,38 +8,20 @@ import css from './QuestionsListPageStyles.scss';
 
 import compose from '../../utils/compose';
 import Loader from '../../components/Loader/Loader';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import QuestionListItem from '../../components/QuestionListItem/QuestionListItem';
+import QuestionList from '../../components/QuestionList/QuestionList';
+import QuestionListHeader from '../../components/QuestionListHeader/QuestionListHeader';
 import { getQuestions, removeQuestionsFromCategory } from '../../redux/reducers/questionsReducer';
 import withUser from '../../components/hoc/withUser';
+import withDisplayView from '../../components/hoc/withDisplayView';
 import withFavouriteQuestionsResourcer from '../../components/hoc/withFavouriteQuestionsResourcer';
 
 class QuestionsListPage extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      view: 'lines'
-    };
-
-    this.handleLinesViewClick = this.handleLinesViewClick.bind(this);
-    this.handleGridViewClick = this.handleGridViewClick.bind(this);
-  }
-
   componentWillUnmount() {
      this.props.removeQuestionsFromCategory(this.props.questionCategory.id);
   }
 
   componentDidMount() {
     this.props.getQuestions(this.props.questionCategory.id);
-  }
-
-  handleLinesViewClick() {
-    this.setState({ view: 'lines' });
-  }
-
-  handleGridViewClick() {
-    this.setState({ view: 'grid' });
   }
 
   render() {
@@ -80,38 +62,10 @@ class QuestionsListPage extends React.Component {
           </ul>
         </div>
 
-        <div className="list-page__list-header">
-          <strong className="list-page__list-header__question-id">#</strong>
-          <strong className="list-page__list-header__question-title">Název otázky</strong>
-
-          <button
-            type="button"
-            className="list-page__list-header__lines-view"
-            onClick={this.handleLinesViewClick}
-          >
-            <FontAwesomeIcon
-              className={`
-                list-page__list-header__lines-view__icon
-                ${this.state.view === 'lines' ? ' list-page__list-header__lines-view__icon--active' : ''}
-              `}
-              icon="align-justify"
-            />
-          </button>
-
-          <button
-            type="button"
-            className="list-page__list-header__grid-view"
-            onClick={this.handleGridViewClick}
-          >
-            <FontAwesomeIcon
-              className={`
-                list-page__list-header__grid-view__icon
-                ${this.state.view === 'grid' ? ' list-page__list-header__grid-view__icon--active' : ''}
-              `}
-              icon="th"
-            />
-          </button>
-        </div>
+        <QuestionListHeader
+          displayView={this.props.displayView}
+          onDisplayViewChange={this.props.onDisplayViewChange}
+        />
 
         {
           this.props.fetching &&
@@ -121,35 +75,25 @@ class QuestionsListPage extends React.Component {
           </div>
         }
 
-        {
-          questions &&
-          questions.length > 0 &&
-          <ol className={`list-page__questions-list--${this.state.view}-view`}>
-            {
-              questions.map(q => (
-                <QuestionListItem
-                  key={q.id}
-                  id={q.id}
-                  question={q.question}
-                  favourite={q.favourite}
-                  note={q.note}
-                  link={`${this.props.match.params.categoryId}/${q.id}`}
-                />
-              ))
-            }
-          </ol>
-        }
+        <QuestionList
+          items={questions}
+          displayView={this.props.displayView}
+        />
       </div>
     );
   }
 }
 
 QuestionsListPage.defaultProps = {
-  fetching: false
+  fetching: false,
+  displayView: 'lines',
+  onDisplayViewChange: () => {}
 };
 
 QuestionsListPage.propTypes = {
-  fetching: PropTypes.bool
+  fetching: PropTypes.bool,
+  displayView: PropTypes.string,
+  onDisplayViewChange: PropTypes.func
 };
 
 function fetchCategory(fields = [], currentId) {
@@ -184,7 +128,8 @@ const withConnect = connect(mapStateToProps, mapDispatchToProps)(QuestionsListPa
 
 const enhancedQuestionsListPage = compose(
   withUser,
-  withFavouriteQuestionsResourcer
+  withFavouriteQuestionsResourcer,
+  withDisplayView
 )(withConnect);
 
 export default enhancedQuestionsListPage;

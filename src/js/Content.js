@@ -3,7 +3,7 @@ import { Route } from 'react-router-dom';
 import { connect } from 'react-redux'
 
 import Container from './components/Container/Container';
-import TestPage from './pages/TestPage/TestPage';
+import TestPage from './pages/TestPage/TestPageContainer';
 import QuestionsListPage from './pages/QuestionsListPage/QuestionsListPage';
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage';
 import FavouriteQuestionsPage from './pages/FavouriteQuestionsPage/FavouriteQuestionsPage';

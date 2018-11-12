@@ -51,11 +51,10 @@ QuestionListItem.defaultProps = {
 };
 
 QuestionListItem.propTypes = {
-  favourite: PropTypes.bool,
-  note: PropTypes.bool,
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   question: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired
+  note: PropTypes.bool,
+  favourite: PropTypes.bool
 };
 
 export default QuestionListItem;

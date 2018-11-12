@@ -15,6 +15,7 @@ const REMOVE_FAVOURITE_QUESTION_FROM_STATE = 'questions/REMOVE_FAVOURITE_QUESTIO
 const REMOVE_FAVOURITE_QUESTIONS_FROM_STATE = 'questions/REMOVE_FAVOURITE_QUESTIONS_FROM_STATE';
 const FAVOURITE_QUESTIONS_CHANGED = 'questions/FAVOURITE_QUESTIONS_CHANGED';
 const FAVOURITE_QUESTION_REQUEST = 'questions/FAVOURITE_QUESTION_REQUEST';
+const FAVOURITE_QUESTIONS_REQUEST = 'questions/FAVOURITE_QUESTIONS_REQUEST';
 const FAVOURITE_QUESTION_CHANGED = 'questions/FAVOURITE_QUESTION_CHANGED';
 
 export const addFavouriteQuestion = (question, userId) => (dispatch) => {
@@ -52,6 +53,11 @@ export const removeFavouriteQuestionsFromState = () => (dispatch) => {
 }
 
 export const onFavouriteQuestionsChange = (userId) => (dispatch) => {
+  dispatch({
+    type: FAVOURITE_QUESTIONS_REQUEST,
+    payload: null
+  })
+
   const onChangeCallBack = (favouriteQuestions) => dispatch({
     type: FAVOURITE_QUESTIONS_CHANGED,
     payload: favouriteQuestions
@@ -107,6 +113,11 @@ export default (state = initState, action) => {
       return {
         ...state,
         items: action.payload
+      }
+    case FAVOURITE_QUESTIONS_REQUEST:
+      return {
+        ...state,
+        fetching: true
       }
     case FAVOURITE_QUESTIONS_CHANGED:
       return {

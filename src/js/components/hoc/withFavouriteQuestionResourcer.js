@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
+import AnswerListItem from '../../components/AnswerListItem/AnswerListItem';
 import { onFavouriteQuestionChange } from '../../redux/reducers/favouriteQuestionsReducer'
 
 export default (BaseComponent) => {

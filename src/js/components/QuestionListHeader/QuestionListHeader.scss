@@ -1,0 +1,32 @@
+@import '../../../scss/constants.scss';
+
+.question-list-header {
+  display: flex;
+  padding: 15px 30px;
+  border-bottom: 2px solid darken(#e5e7e8, 15%);
+}
+    .question-list-header__question-id {
+      flex-basis: 150px;
+    }
+    .question-list-header__question-title {
+      flex: 1;
+    }
+    .question-list-header__grid-view,
+    .question-list-header__lines-view {
+      margin: 0 5px;
+      padding: 0;
+      background: none;
+
+      &:hover {
+        background: none;
+      }
+    }
+        .question-list-header__grid-view__icon,
+        .question-list-header__lines-view__icon {
+          color: $fontColor;
+          font-size: 25px;
+        }
+        .question-list-header__grid-view__icon--active,
+        .question-list-header__lines-view__icon--active {
+          color: #008df5;
+        }

@@ -15,13 +15,14 @@ class AnswerListItem extends PureComponent {
   }
 
   render() {
-    const { answer, index } = this.props;
+    const { answer, index, answered } = this.props;
 
     return (
       <li
         key={index}
         onClick={this.onItemClick}
-        className="answers-list__answer-item"
+        className={`answers-list__answer-item
+          ${answered ? ' answers-list__answer-item--answered' : ''}`}
       >
         <span className="answers-list__answer-index">{index}</span>
         <span className="answers-list__answer-text">{answer}</span>
@@ -31,12 +32,14 @@ class AnswerListItem extends PureComponent {
 }
 
 AnswerListItem.defaultProps = {
+  answered: false,
   onItemClick: () => {}
 };
 
 AnswerListItem.propTypes = {
   index: PropTypes.number.isRequired,
   answer: PropTypes.string.isRequired,
+  answered: PropTypes.bool,
   onItemClick: PropTypes.func
 };
 

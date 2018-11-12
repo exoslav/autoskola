@@ -1,0 +1,25 @@
+@import '../../../scss/constants.scss';
+
+.question-list--grid-view {
+  display: flex;
+  flex-wrap: wrap;
+
+  .question-list-item {
+    flex-basis: 33%;
+
+    .question-list-item__link {
+      flex-direction: column;
+
+      .question-list-item__item-id {
+        flex-basis: auto;
+      }
+      .question-list-item__title {
+        flex: 0;
+      }
+      .question-list-item__icons {
+        align-self: flex-end;
+        flex-basis: auto;
+      }
+    }
+  }
+}

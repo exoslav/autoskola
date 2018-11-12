@@ -37,12 +37,16 @@ export default (BaseComponent) => {
         <BaseComponent
           {...this.props}
           favouriteQuestions={this.props.favouriteQuestions}
+          favouriteQuestionsLoading={this.props.fetching}
         />
       );
     }
   }
 
-  const mapStateToProps = (state) => ({ favouriteQuestions: state.favouriteQuestions.items })
+  const mapStateToProps = (state) => ({
+    fetching: state.favouriteQuestions.fetching,
+    favouriteQuestions: state.favouriteQuestions.items
+  })
 
   const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({

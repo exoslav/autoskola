@@ -8,7 +8,12 @@
   &:hover {
     border-left: 3px solid #008df5;
   }
+
+  &.answers-list__answer-item--answered {
+    border-color: #bcc2c4;
+  }
 }
+
     .answers-list__answer-index {
       flex-basis: 25px;
       font-weight: 700;
