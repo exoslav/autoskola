@@ -14,9 +14,8 @@ class QuestionInterface extends PureComponent {
       note: this.props.note
     };
 
-    this.onNoteSave = this.onNoteSave.bind(this);
+    this.saveQuestion = this.saveQuestion.bind(this);
     this.onNoteChange = this.onNoteChange.bind(this);
-    this.onFavouriteClick = this.onFavouriteClick.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -29,12 +28,8 @@ class QuestionInterface extends PureComponent {
     this.setState({ note: e.target.value });
   }
 
-  onNoteSave() {
-    this.props.onNoteClick(this.state.note);
-  }
-
-  onFavouriteClick() {
-    this.props.onFavouriteClick(!this.props.favourite);
+  saveQuestion(e, favourite = this.props.favourite) {
+    this.props.onSaveQuestion(this.state.note, favourite);
   }
 
   render() {
@@ -53,9 +48,9 @@ class QuestionInterface extends PureComponent {
         <div>
           <div className="froms__field-wrap">
             <Icon
-              classNames="star"
+              iconClassName="star"
               icon={[favourite ? 'fas' : 'far', 'star']}
-              onIconClick={this.onFavouriteClick}
+              onIconClick={(e) => this.saveQuestion(e, !this.props.favourite)}
             />
             <span>
               {
@@ -74,7 +69,7 @@ class QuestionInterface extends PureComponent {
               htmlFor="question-note"
             >
               <Icon
-                classNames="note"
+                iconClassName="sticky-note"
                 icon={[note ? 'fas' : 'far', 'sticky-note']}
                 onIconClick={() => {}}
               />
@@ -88,7 +83,7 @@ class QuestionInterface extends PureComponent {
             />
             <button
               className="question-interface__submit-note"
-              onClick={this.onNoteSave}
+              onClick={this.saveQuestion}
               type="button"
             >
               Uložit poznámku
@@ -104,16 +99,14 @@ QuestionInterface.propTypes = {
   note: PropTypes.string,
   loading: PropTypes.bool,
   favourite: PropTypes.bool,
-  onNoteClick: PropTypes.func,
-  onFavouriteClick: PropTypes.func
+  onSaveQuestion: PropTypes.func
 };
 
 QuestionInterface.defaultProps = {
   note: '',
   loading: false,
   favourite: false,
-  onNoteClick: () => {},
-  onFavouriteClick: () => {}
+  onSaveQuestion: () => {}
 };
 
 export default QuestionInterface;

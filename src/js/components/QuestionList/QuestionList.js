@@ -5,8 +5,7 @@ import css from './QuestionList.scss';
 
 import QuestionListItem from '../QuestionListItem/QuestionListItem';
 
-class QuestionList extends React.Component {
-
+class QuestionList extends React.PureComponent {
   render() {
     const { items, displayView } = this.props;
 
@@ -14,10 +13,10 @@ class QuestionList extends React.Component {
       <Fragment>
         {
           items && items.length > 0 &&
-          <ol className={`question-list--${this.props.displayView}-view`}>
+          <ol className={`question-list--${displayView}-view`}>
             {
               items.map((listItem) => {
-                const { id, categoryId, question, favourite, note } = listItem;
+                const { id, category, question, favourite, note } = listItem;
 
                 return (
                   <QuestionListItem
@@ -26,7 +25,7 @@ class QuestionList extends React.Component {
                     question={question}
                     favourite={favourite}
                     note={note}
-                    link={`/otazky/${categoryId}/${id}`}
+                    link={`/otazky/${category}/${id}`}
                   />
                 );
               })
@@ -47,7 +46,7 @@ QuestionList.propTypes = {
   displayView: PropTypes.string,
   items: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.string.isRequired,
-    categoryId: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
     question: PropTypes.string.isRequired,
     note: PropTypes.bool,
     favourite: PropTypes.bool

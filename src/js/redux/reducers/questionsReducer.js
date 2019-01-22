@@ -1,9 +1,8 @@
-import { getQuestion as getQuestionFromDb }  from '../../firebase/getQuestion';
-import getQuestionsCollections  from '../../firebase/getQuestionsCollections';
 import FirebaseActions from '../../firebase';
 
 const initState = {
   fetching: true,
+  lastVisible: null,
   items: [
     {
       id: 'pravidla-provozu',
@@ -61,18 +60,12 @@ const initState = {
       perex: 'Otázky ohledně zdravotnické přípravy.',
       questions: []
     }
-  ],
-  currentQuestion: null
+  ]
 }
-
-const GET_QUESTION_REQUEST = 'questions/GET_QUESTION_REQUEST';
-const GET_QUESTION_SUCCESS = 'questions/GET_QUESTION_SUCCESS';
 
 const GET_QUESTIONS_REQUEST = 'questions/GET_QUESTIONS_REQUEST';
 const GET_QUESTIONS_SUCCESS = 'questions/GET_QUESTIONS_SUCCESS';
-
 const REMOVE_QUESTIONS_FROM_CATEGORY = 'questions/REMOVE_QUESTIONS_FROM_CATEGORY';
-const REMOVE_QUESTION_FROM_CATEGORY = 'questions/REMOVE_QUESTION_FROM_CATEGORY';
 
 export const removeQuestionsFromCategory = (categoryId) => (dispatch) => {
   dispatch({
@@ -81,27 +74,37 @@ export const removeQuestionsFromCategory = (categoryId) => (dispatch) => {
   });
 }
 
-export const removeQuestionFromCategory = (categoryId) => (dispatch) => {
-  dispatch({
-    type: REMOVE_QUESTION_FROM_CATEGORY,
-    payload: null
-  });
-}
-
-export const getQuestions = (categoryId) => (dispatch) => {
+export const getQuestions = (categoryId, startAfter) => (dispatch) => {
   dispatch({ type: GET_QUESTIONS_REQUEST, payload: null });
 
-  getQuestionsCollections(categoryId)
-    .then((querySnapshot) => {
-      let newQuestionsList = [];
+  FirebaseActions.getQuestionsByCategory(categoryId, startAfter)
+    .then(querySnapshot => dispatchFromQuerySnapshot(querySnapshot, categoryId, dispatch))
+    .catch((err) => {
+      console.log(err);
+    })
+}
 
-      querySnapshot.forEach((doc) => {
-        newQuestionsList = [...newQuestionsList, doc.data()];
-      });
+export const getQuestionsWithLimit = (categoryId, startAfter) => (dispatch) => {
+  dispatch({ type: GET_QUESTIONS_REQUEST, payload: null });
 
+  FirebaseActions.getQuestionsByCategoryAndLimit(categoryId, startAfter)
+    .then(querySnapshot => dispatchFromQuerySnapshot(querySnapshot, categoryId, dispatch))
+    .catch((err) => {
+      console.log(err);
+    })
+}
+
+export const getQuestionById = (categoryId, questionId) => (dispatch) => {
+  dispatch({ type: GET_QUESTIONS_REQUEST, payload: null });
+
+  FirebaseActions.getQuestionById(questionId)
+    .then((snapshot) => {
       dispatch({
         type: GET_QUESTIONS_SUCCESS,
-        payload: { categoryId, newQuestionsList }
+        payload: {
+          categoryId,
+          questions: [snapshot.data()]
+        }
       });
     })
     .catch((err) => {
@@ -109,19 +112,18 @@ export const getQuestions = (categoryId) => (dispatch) => {
     })
 }
 
-export const getQuestion = (categoryId, questionId) => (dispatch) => {
-  dispatch({ type: GET_QUESTION_REQUEST, payload: null });
+function dispatchFromQuerySnapshot(snapshot, categoryId, dispatch) {
+  const questions = [];
+  const lastVisible = snapshot.docs[snapshot.docs.length - 1];
 
-  getQuestionFromDb(categoryId, questionId)
-    .then((snapshot) => {
-      dispatch({
-        type: GET_QUESTION_SUCCESS,
-        payload: snapshot.data()
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+  snapshot.forEach((doc) => {
+    questions.push(doc.data());
+  });
+
+  dispatch({
+    type: GET_QUESTIONS_SUCCESS,
+    payload: { categoryId, questions, lastVisible }
+  });
 }
 
 export default (state = initState, action) => {
@@ -131,31 +133,21 @@ export default (state = initState, action) => {
         ...state,
         fetching: true
       }
-    case GET_QUESTION_REQUEST:
-      return {
-        ...state,
-        fetching: true
-      }
     case GET_QUESTIONS_SUCCESS:
       return {
         ...state,
         fetching: false,
+        lastVisible: action.payload.lastVisible,
         items: state.items.map((item) => {
           if (item.id === action.payload.categoryId) {
             return {
               ...item,
-              questions: action.payload.newQuestionsList
+              questions: action.payload.questions
             }
           }
 
           return item;
         })
-      }
-    case GET_QUESTION_SUCCESS:
-      return {
-        ...state,
-        fetching: false,
-        currentQuestion: action.payload
       }
     case REMOVE_QUESTIONS_FROM_CATEGORY:
       return {
@@ -170,11 +162,6 @@ export default (state = initState, action) => {
 
           return item;
         })
-      }
-    case REMOVE_QUESTION_FROM_CATEGORY:
-      return {
-        ...state,
-        currentQuestion: null
       }
     default:
       return state;

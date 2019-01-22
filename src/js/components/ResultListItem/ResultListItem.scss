@@ -1,0 +1,13 @@
+.result-list-item {
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.result-list-item--correct {
+  background: #e4f7e2;
+}
+
+.result-list-item--incorrect {
+  background: #f7e2e2;
+}

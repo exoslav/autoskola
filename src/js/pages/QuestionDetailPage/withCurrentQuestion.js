@@ -8,14 +8,20 @@ export default (BaseComponent) => {
         <BaseComponent
           {...this.props}
           currentQuestion={this.props.currentQuestion}
+          currentQuestionLoading={this.props.currentQuestionLoading}
         />
       );
     }
   }
 
-  const mapStateToProps = (state) => {
+  const mapStateToProps = (state, props) => {
+    const category = state.questions.items.filter(category => (
+      category.id === props.match.params.categoryId
+    ))[0];
+
     return {
-      currentQuestion: state.questions.currentQuestion,
+      currentQuestion: category.questions.length > 0
+        ? category.questions[0] : null,
       currentQuestionLoading: state.questions.fetching
     };
   }

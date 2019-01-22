@@ -6,7 +6,7 @@ import Container from './components/Container/Container';
 import TestPage from './pages/TestPage/TestPageContainer';
 import QuestionsListPage from './pages/QuestionsListPage/QuestionsListPage';
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage';
-import FavouriteQuestionsPage from './pages/FavouriteQuestionsPage/FavouriteQuestionsPage';
+import SavedQuestionsPage from './pages/SavedQuestionsPage/SavedQuestionsPage';
 import HomePage from './pages/HomePage';
 import Header from './components/Header/Header';
 
@@ -27,19 +27,28 @@ class Content extends React.Component {
           <Container classNames="app-content">
             <Route
               path="/oblibene-otazky"
-              component={FavouriteQuestionsPage}
+              component={SavedQuestionsPage}
             />
 
             <Route
               exact
               path="/otazky/:categoryId"
-              component={QuestionsListPage}
+              render={(props) => (
+                <QuestionsListPage
+                  categoryId={props.match.params.categoryId}
+                />
+              )}
             />
 
             <Route
               exact
               path="/otazky/:categoryId/:questionId"
-              component={QuestionDetailPage}
+              render={(props) => (
+                <QuestionDetailPage
+                  questionId={props.match.params.questionId}
+                  categoryId={props.match.params.categoryId}
+                />
+              )}
             />
 
             <Route

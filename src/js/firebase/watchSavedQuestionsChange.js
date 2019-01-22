@@ -1,6 +1,6 @@
 import * as firebase from 'firebase/app';
 
-export const watchFavouriteQuestionsChange = (userId, callBack) => {
+export const watchSavedQuestionsChange = (userId, callBack) => {
   const db = firebase.firestore();
 
   db.settings({
@@ -10,10 +10,10 @@ export const watchFavouriteQuestionsChange = (userId, callBack) => {
   return db
     .collection(`users`)
     .doc(`${userId}`)
-    .collection('favourite-questions')
+    .collection('saved-questions')
     .onSnapshot((collection) => {
       callBack(collection.docs.map(doc => doc.data()));
     });
 }
 
-export default watchFavouriteQuestionsChange;
+export default watchSavedQuestionsChange;

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import css  from './TestPageStyles.scss';
 
 import Question from '../../components/Question/Question';
+import ResultList from '../../components/ResultList/ResultList';
 import ThumbList from '../../components/TestThumbList/TestThumbList';
 
 class TestPage extends React.Component {
@@ -20,8 +21,10 @@ class TestPage extends React.Component {
                 activeQuestion &&
                 <Question
                   bold
+                  questionId={activeQuestion.id}
                   questionText={activeQuestion.question}
                   answers={activeQuestion.answers}
+                  answeredIndex={activeQuestion.answeredIndex}
                   onAnswerClick={onAnswerClick}
                 />
               }
@@ -56,26 +59,22 @@ class TestPage extends React.Component {
 
         {
           showResults &&
-          <ul>
-            {
-              answeredQuestions.map(q => (
-                <li>
-                  <strong>{q.question}</strong>
-                  <span>{q.correct ? 'Spravne': 'Spatne'}</span>
-                </li>
-              ))
-            }
-          </ul>
-        }
+          <Fragment>
+            <h1>Vyhodnocení testu</h1>
 
-        {
-          showResults &&
-          <button
-            type="button"
-            onClick={onSaveTest}
-          >
-            Ulozit tento test
-          </button>
+            <div>
+              <strong>Počet bodů {}</strong>
+            </div>
+
+            <ResultList results={questions} />
+
+            <button
+              type="button"
+              onClick={onSaveTest}
+            >
+              Ulozit tento test
+            </button>
+          </Fragment>
         }
       </Fragment>
     );

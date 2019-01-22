@@ -8,10 +8,18 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class Icon extends React.PureComponent {
   render() {
+    const iconClasses = [`icon-component icon-component--${this.props.iconClassName}`];
+
+    iconClasses.push(`icon-component--size-${this.props.size}`);
+
+    if (this.props.customClassName) {
+      iconClasses.push(this.props.customClassName);
+    }
+
     return (
       <FontAwesomeIcon
         onClick={this.props.onIconClick}
-        className={`icon-component icon-component--${this.props.classNames}`}
+        className={iconClasses.join(' ')}
         icon={this.props.icon}
       />
     );
@@ -19,7 +27,8 @@ class Icon extends React.PureComponent {
 }
 
 Icon.defaultProps = {
-  classNames: '',
+  customClassName: '',
+  size: 'medium',
   onIconClick: () => {}
 };
 
@@ -28,6 +37,8 @@ Icon.propTypes = {
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string)
   ]).isRequired,
+  iconClassName: PropTypes.string.isRequired,
+  customClassName: PropTypes.string,
   classNames: PropTypes.string,
   onIconClick: PropTypes.func
 };

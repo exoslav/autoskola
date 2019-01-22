@@ -8,13 +8,15 @@ import AnswerListItem from '../AnswerListItem/AnswerListItem';
 
 class Question extends PureComponent {
   render() {
-    const { bold, answers, questionText, onAnswerClick } = this.props;
+    const { bold, answers, questionId, questionText, answered, correct, onAnswerClick } = this.props;
 
     return (
       <div className="question">
         <QuestionTitle
           bold={bold}
           questionText={questionText}
+          answered={answered}
+          correct={correct}
         />
 
         {
@@ -25,8 +27,9 @@ class Question extends PureComponent {
                 <AnswerListItem
                   key={index}
                   index={index}
+                  questionId={questionId}
                   answer={answer}
-                  answered={answer.answered}
+                  answered={this.props.answeredIndex === index}
                   onItemClick={onAnswerClick}
                 />
               ))
@@ -40,12 +43,19 @@ class Question extends PureComponent {
 
 Question.defaultProps = {
   bold: false,
+  answered: false,
+  correct: false,
+  answeredIndex: null,
   onAnswerClick: () => {}
 };
 
 Question.propTypes = {
+  questionId: PropTypes.string.isRequired,
   questionText: PropTypes.string.isRequired,
   answers: PropTypes.arrayOf(PropTypes.string).isRequired,
+  answered: PropTypes.bool,
+  answeredIndex: PropTypes.number,
+  correct: PropTypes.bool,
   bold: PropTypes.bool,
   onAnswerClick: PropTypes.func
 };

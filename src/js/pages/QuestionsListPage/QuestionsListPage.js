@@ -10,22 +10,48 @@ import compose from '../../utils/compose';
 import Loader from '../../components/Loader/Loader';
 import QuestionList from '../../components/QuestionList/QuestionList';
 import QuestionListHeader from '../../components/QuestionListHeader/QuestionListHeader';
-import { getQuestions, removeQuestionsFromCategory } from '../../redux/reducers/questionsReducer';
+import {
+  getQuestions,
+  getQuestionsWithLimit,
+  removeQuestionsFromCategory
+} from '../../redux/reducers/questionsReducer';
 import withUser from '../../components/hoc/withUser';
 import withDisplayView from '../../components/hoc/withDisplayView';
-import withFavouriteQuestionsResourcer from '../../components/hoc/withFavouriteQuestionsResourcer';
+import withComposedQuestions from '../../components/hoc/withComposedQuestions';
+import withSavedQuestionsResourcer from '../../components/hoc/withSavedQuestionsResourcer';
+import withMultipleQuestionsResourcer from '../../components/hoc/withMultipleQuestionsResourcer';
 
 class QuestionsListPage extends React.Component {
-  componentWillUnmount() {
-     this.props.removeQuestionsFromCategory(this.props.questionCategory.id);
+  constructor() {
+    super();
+
+    this.handleButtonClick = this.handleButtonClick.bind(this);
   }
 
   componentDidMount() {
-    this.props.getQuestions(this.props.questionCategory.id);
+    console.log('listing page component did mount');
+  }
+
+  componentWillUnmount() {
+    console.log('listing page component is about to unmount');
+  }
+
+  handleButtonClick() {
+    const { category, lastVisible, getQuestionsWithLimit } = this.props;
+
+    if (!lastVisible) {
+      alert('No more questions to load');
+
+      return;
+    }
+
+    getQuestionsWithLimit(category.id, lastVisible);
   }
 
   render() {
-    const { name, perex, questions } = this.props.questionCategory;
+    window.test = true;
+    console.log('listing page render')
+    const { name, perex } = this.props.category;
 
     return (
       <div className="list-page__wrapper">
@@ -38,7 +64,7 @@ class QuestionsListPage extends React.Component {
             <li className="list-page__run-test__item">
               <Link
                 className="list-page__run-test__link"
-                to={`/test?kategorie=${this.props.questionCategory.id}`}
+                to={`/test?kategorie=${this.props.category.id}`}
               >
                 Spustit test od první otázky
               </Link>
@@ -46,7 +72,7 @@ class QuestionsListPage extends React.Component {
             <li>
               <Link
                 className="list-page__run-test__link"
-                to={`/test?kategorie=${this.props.questionCategory.id}`}
+                to={`/test?kategorie=${this.props.category.id}`}
               >
                 Spustit test a otázky setřídit náhodně
               </Link>
@@ -54,7 +80,7 @@ class QuestionsListPage extends React.Component {
             <li>
               <Link
                 className="list-page__run-test__link"
-                to={`/test?kategorie=${this.props.questionCategory.id}`}
+                to={`/test?kategorie=${this.props.category.id}`}
               >
                 Nastavit si vlastní test ze zobrazených otázek
               </Link>
@@ -76,9 +102,16 @@ class QuestionsListPage extends React.Component {
         }
 
         <QuestionList
-          items={questions}
+          items={this.props.questions}
           displayView={this.props.displayView}
         />
+
+        <button
+          type="button"
+          onClick={this.handleButtonClick}
+        >
+          Načíst další otázky
+        </button>
       </div>
     );
   }
@@ -96,39 +129,26 @@ QuestionsListPage.propTypes = {
   onDisplayViewChange: PropTypes.func
 };
 
-function fetchCategory(fields = [], currentId) {
-  return fields.find(category => category.id === currentId);
-}
-
-function fetchFavourites(questions = [], favourites = []) {
-  return questions.map((q) => ({
-    ...q,
-    note: !!favourites.find(fq => (fq.id === q.id) && fq.note),
-    favourite: !!favourites.find(fq => (fq.id === q.id) && fq.favourite)
-  }))
-}
-
-const mapStateToProps = (state, props) => {
-  const currentCategory = fetchCategory(state.questions.items, props.match.params.categoryId);
-
-  return {
-    fetching: state.questions.fetching,
-    questionCategory: {
-      ...currentCategory,
-      questions: fetchFavourites(currentCategory.questions, state.favouriteQuestions.items)
-    }
-  };
-}
+const mapStateToProps = (state, props) => ({
+  fetching: state.questions.fetching,
+  lastVisible: state.questions.lastVisible
+});
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getQuestions, removeQuestionsFromCategory }, dispatch);
+  return bindActionCreators({
+    getQuestions,
+    getQuestionsWithLimit,
+    removeQuestionsFromCategory
+  }, dispatch);
 }
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps)(QuestionsListPage);
 
 const enhancedQuestionsListPage = compose(
   withUser,
-  withFavouriteQuestionsResourcer,
+  withSavedQuestionsResourcer,
+  withMultipleQuestionsResourcer,
+  withComposedQuestions,
   withDisplayView
 )(withConnect);
 

@@ -21,10 +21,7 @@ class TestPageContainer extends React.Component {
 
     this.state = {
       questions: [],
-      showResults: false,
-      activeQuestion: null,
-      activeQuestionIndex: 0,
-      answeredQuestions: []
+      showResults: false
     }
 
     this.onSaveTest = this.onSaveTest.bind(this);
@@ -40,13 +37,10 @@ class TestPageContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.questions !== prevProps.questions) {
+    if (this.props.questions.length !== prevProps.questions.length) {
       const { questions } = this.props;
 
-      this.setState((prevState) => ({
-        questions: questions,
-        activeQuestion: questions[prevState.activeQuestionIndex]
-      }));
+      this.setState({ questions });
     }
   }
 
@@ -61,58 +55,34 @@ class TestPageContainer extends React.Component {
       questions: prevState.questions.map(q => ({
         ...q,
         active: q.id === questionId
-      })),
-      activeQuestion: prevState.questions.find(q => q.id === questionId)
+      }))
     }));
   }
 
-  onAnswerClick(clickedAnswer, clickedIndex) {
-    const isQuestionAnswered = !!this.state.answeredQuestions.find(q => q.id === this.state.activeQuestion.id);
+  onAnswerClick(questionId, answerIndex) {
+    const activeQuestion = this.state.questions.find(q => q.id === questionId);
 
-    if (isQuestionAnswered) {
-      this.setState(prevState => ({
-        questions: prevState.questions.map(q => (
-          q.id === this.state.activeQuestion.id
-            ? {
-              ...q,
-              answeredIndex: clickedIndex
-            } : q
-        )),
-        answeredQuestions: prevState.answeredQuestions.map(q => (
-          q.id === this.state.activeQuestion.id
-            ? {
-              ...q,
-              correct: clickedIndex === prevState.activeQuestion.correctAnswer
-            } : q
-        ))
-      }));
-    } else {
-      this.setState(prevState => ({
-        questions: prevState.questions.map(q => (
-          q.id === this.state.activeQuestion.id
-            ? {
-              ...q,
-              answeredIndex: clickedIndex
-            } : q
-        )),
-        answeredQuestions: [
-          ...prevState.answeredQuestions,
-          {
-            ...prevState.activeQuestion,
-            correct: clickedIndex === prevState.activeQuestion.correctAnswer
-          }
-        ]
-      }));
-    }
-
-    this.setActiveQuestion(this.state.activeQuestionIndex);
+    this.setState(prevState => ({
+      questions: prevState.questions.map(q => (
+        q.id === questionId
+          ? {
+            ...q,
+            answered: true,
+            answeredIndex: answerIndex,
+            correct: answerIndex === activeQuestion.correctAnswer
+          } : q
+      ))
+    }));
   }
 
   onTestEvaluation() {
     let showResults = false;
 
-    if (this.state.questions.length !== this.state.answeredQuestions.length) {
-      if (confirm("Neodpověděli jste na všechny otázky, chcete přesto vyhodnotit test?")) {
+    const { questions } = this.state;
+    const answeredQuestions = questions.filter(q => q.answered);
+
+    if (questions.length !== answeredQuestions.length) {
+      if (confirm(`Odpověděli jste na ${answeredQuestions.length} otázek z ${questions.length}, chcete přesto vyhodnotit test?`)) {
         showResults = true
       } else {
         showResults = false;
@@ -128,21 +98,21 @@ class TestPageContainer extends React.Component {
   onSaveTest() {
     const testToSave = {
       id: 123,
-      questions: this.state.answeredQuestions
+      questions: this.state.questions
     };
 
     this.props.saveTest(this.props.user.uid, testToSave);
   }
 
   render() {
-    const { questions, answeredQuestions, showResults, activeQuestion } = this.state;
+    const { questions, showResults } = this.state;
 
     return (
       <TestPage
         questions={questions}
-        answeredQuestions={answeredQuestions}
+        answeredQuestions={this.state.questions.filter(q => q.answered)}
         showResults={showResults}
-        activeQuestion={activeQuestion}
+        activeQuestion={this.state.questions.find(q => q.active)}
         setActiveQuestion={this.setActiveQuestion}
         onSaveTest={this.onSaveTest}
         onTestEvaluation={this.onTestEvaluation}

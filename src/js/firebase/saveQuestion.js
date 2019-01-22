@@ -10,7 +10,7 @@ const saveQuestion = (question, userId) => {
   return db
     .collection(`users`)
     .doc(`${userId}`)
-    .collection('favourite-questions')
+    .collection('saved-questions')
     .doc(`${question.id}`)
     .set({ ...question });
 }

@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 
 import Loader from '../Loader/Loader';
 import withTranslationsContext from '../../withTranslationsContext';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Icon from '../Icon/Icon';
 
 import { removeAuthErrors } from '../../redux/reducers/authReducer';
 
@@ -67,9 +67,11 @@ class LoginForm extends React.Component {
         {
           error &&
           <div className="login-form__error">
-            <FontAwesomeIcon
-              className="login-form__error__icon"
+            <Icon
+              size="large"
               icon="exclamation-triangle"
+              iconClassName="exclamation-triangle"
+              customClassName="login-form__error__icon"
             />
 
             {

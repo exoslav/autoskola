@@ -11,7 +11,7 @@ class AnswerListItem extends PureComponent {
   }
 
   onItemClick() {
-    this.props.onItemClick(this.props.answer, this.props.index);
+    this.props.onItemClick(this.props.questionId, this.props.index);
   }
 
   render() {
@@ -19,7 +19,6 @@ class AnswerListItem extends PureComponent {
 
     return (
       <li
-        key={index}
         onClick={this.onItemClick}
         className={`answers-list__answer-item
           ${answered ? ' answers-list__answer-item--answered' : ''}`}
@@ -37,6 +36,7 @@ AnswerListItem.defaultProps = {
 };
 
 AnswerListItem.propTypes = {
+  questionId: PropTypes.string.isRequired,
   index: PropTypes.number.isRequired,
   answer: PropTypes.string.isRequired,
   answered: PropTypes.bool,

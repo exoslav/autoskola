@@ -10,7 +10,7 @@ import FirebaseActions from './firebase';
 import initIcons from './initializeIcons';
 import { config } from './firebase/initializeFirebaseApp';
 
-import styles from '../scss/main.scss'
+import '../scss/main.scss';
 
 FirebaseActions.initializeFirebaseApp(config);
 FirebaseActions.setPersistence();

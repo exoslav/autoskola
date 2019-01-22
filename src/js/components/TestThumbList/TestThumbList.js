@@ -32,7 +32,7 @@ class TestThumbList extends React.Component {
                   index={index}
                   questionText={q.question}
                   active={q.active}
-                  answered={false}
+                  answered={q.answered}
                   onItemClick={onThumbItemClick}
                 />
               ))

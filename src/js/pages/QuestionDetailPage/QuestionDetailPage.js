@@ -10,20 +10,19 @@ import AnswerListItem from '../../components/AnswerListItem/AnswerListItem';
 import LoginAdvantages from '../../components/LoginAdvantages/LoginAdvantages';
 import QuestionInterface from '../../components/QuestionInterface/QuestionInterface';
 import Loader from '../../components/Loader/Loader';
-import withQuestion from './withQuestion';
-import withCurrentQuestion from './withCurrentQuestion';
 import withUser from '../../components/hoc/withUser';
-import withFavouriteQuestionResourcer from '../../components/hoc/withFavouriteQuestionResourcer';
+import withComposedQuestions from '../../components/hoc/withComposedQuestions';
+import withSingleQuestionResourcer from '../../components/hoc/withSingleQuestionResourcer';
+import withSavedQuestionsResourcer from '../../components/hoc/withSavedQuestionsResourcer';
 import {
-  getQuestion,
-  removeQuestionFromCategory
+  getQuestionById,
+  removeQuestionsFromCategory
 } from '../../redux/reducers/questionsReducer';
 import {
   saveQuestion,
-  addFavouriteQuestion,
-  removeFavouriteQuestion,
-  removeFavouriteQuestionFromState
-} from '../../redux/reducers/favouriteQuestionsReducer';
+  deleteSavedQuestion,
+  removeSavedQuestionsFromState
+} from '../../redux/reducers/savedQuestionsReducer';
 
 class QuestionDetailPage extends React.Component {
   constructor() {
@@ -33,91 +32,47 @@ class QuestionDetailPage extends React.Component {
       selectedAnswer: null
     };
 
-    this.onNoteClick = this.onNoteClick.bind(this);
-    this.onFavouriteClick = this.onFavouriteClick.bind(this);
+    this.handleSaveQuestion = this.handleSaveQuestion.bind(this);
   }
 
-  componentDidMount() {
-    const { categoryId, questionId} = this.props.match.params;
-
-    this.props.getQuestion(categoryId, questionId);
-  }
-
-  componentWillUnmount() {
-    this.props.removeQuestionFromCategory(this.props.match.params.categoryId);
-
-    if (this.props.user) {
-      this.props.removeFavouriteQuestionFromState();
-    }
-  }
-
-  answerOnClick(index) {
-    this.setState({ selectedAnswer: index })
-  }
-
-  onNoteClick(note) {
-    const { user, match, question, saveQuestion, removeFavouriteQuestion } = this.props;
+  handleSaveQuestion(note, favourite) {
+    const { user, questions, saveQuestion, deleteSavedQuestion } = this.props;
 
     if (!user) {
       return;
     }
 
-    if (
-      !note &&
-      !question.favourite
-    ) {
-      removeFavouriteQuestion(
-        match.params.questionId,
-        user.uid
-      );
-    } else {
-      saveQuestion(
-        {
-          ...question,
-          note,
-          categoryId: match.params.categoryId
-        },
-        user.uid
-      );
-    }
-  }
+    const question = questions[0];
 
-  onFavouriteClick(favourite) {
-    const { user, match, question, saveQuestion, removeFavouriteQuestion } = this.props;
-
-    if (!user) {
+    if (!note && !favourite) {
+      deleteSavedQuestion(question.id, user.uid);
       return;
     }
 
-    if (
-      !favourite &&
-      !question.note
-    ) {
-      removeFavouriteQuestion(
-        match.params.questionId,
-        user.uid
-      );
-    } else {
-      saveQuestion(
-        {
-          ...question,
-          favourite,
-          categoryId: match.params.categoryId
-        },
-        user.uid
-      );
-    }
+    saveQuestion(
+      {
+        note,
+        favourite,
+        id: question.id
+      },
+      user.uid
+    );
   }
 
   render() {
-    const { question, favouriteQuestionLoading, user } = this.props;
+    console.log(window.test);
+    window.test = false;
+    console.log('question detail page render');
+    const { questions, savedQuestionsLoading, user, questionId } = this.props;
+    console.log(questions);
+    const question = questions[0];
 
     return (
       <Fragment>
         <div className="question-detail__wrapper">
           <div className="question-detail__question">
             <div className="question-detail__question__title-wrapper">
-              <h1 className="question-detail__question__title">{`Otázka číslo: ${this.props.match.params.questionId}`}</h1>
+              <h1 className="question-detail__question__title">{`Otázka číslo: ${questionId}`}</h1>
               {
                 question && <strong className="answer__title">{question.question}</strong>
               }
@@ -127,7 +82,7 @@ class QuestionDetailPage extends React.Component {
               !question &&
               <div className="question-detail__loader">
                 <Loader/>
-                <p className="question-detail__loader__label">{`Načítá se otázka ${this.props.match.params.questionId}`}</p>
+                <p className="question-detail__loader__label">{`Načítá se otázka ${questionId}`}</p>
               </div>
             }
 
@@ -155,11 +110,10 @@ class QuestionDetailPage extends React.Component {
             {
               user &&
               <QuestionInterface
-                loading={favouriteQuestionLoading}
+                loading={savedQuestionsLoading}
                 note={question && question.note || ''}
                 favourite={question && question.favourite || false}
-                onNoteClick={this.onNoteClick}
-                onFavouriteClick={this.onFavouriteClick}
+                onSaveQuestion={this.handleSaveQuestion}
               />
             }
           </div>
@@ -186,12 +140,11 @@ QuestionDetailPage.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    getQuestion,
+    getQuestionById,
     saveQuestion,
-    removeQuestionFromCategory,
-    addFavouriteQuestion,
-    removeFavouriteQuestion,
-    removeFavouriteQuestionFromState
+    removeQuestionsFromCategory,
+    deleteSavedQuestion,
+    removeSavedQuestionsFromState
   }, dispatch);
 }
 
@@ -199,9 +152,9 @@ const withConnect =  connect(null, mapDispatchToProps)(QuestionDetailPage);
 
 const enhancedQuestionDetailPage = compose(
   withUser,
-  withCurrentQuestion,
-  withFavouriteQuestionResourcer,
-  withQuestion
+  withSingleQuestionResourcer,
+  withSavedQuestionsResourcer,
+  withComposedQuestions
 )(withConnect);
 
 export default enhancedQuestionDetailPage;

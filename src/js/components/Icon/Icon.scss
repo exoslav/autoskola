@@ -2,10 +2,34 @@
   font-size: 20px;
 }
 
+.icon-component--size-small {
+  font-size: 15px;
+}
+
+.icon-component--size-medium {
+  font-size: 20px;
+}
+
+.icon-component--size-large {
+  font-size: 25px;
+}
+
+.icon-component--size-xlarge {
+  font-size: 30px;
+}
+
 .icon-component--star {
   color: #ffd600;
 }
 
-.icon-component--note {
+.icon-component--sticky-note {
   color: #b96800;
+}
+
+.icon-component--check-circle {
+  color: #1bc31b;
+}
+
+.icon-component--times-circle {
+  color: #ff2e2e;
 }

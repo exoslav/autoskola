@@ -13,46 +13,15 @@
     .test__thumb-list__wrapper {
       flex: 2;
     }
-        .test__thumb-list {
-          max-height: 50vh;
-          overflow: auto;
-        }
-            .test__thumb-list__label {
-              display: flex;
-              padding: 15px 30px;
-              border-bottom: 2px solid #bcc2c4;
-            }
-            .test__thumb-list__item {
-              display: flex;
-              padding: 15px;
-              font-size: 15px;
-              line-height: 150%;
-              border-left: 3px solid transparent;
-              cursor: pointer;
-
-              &:nth-child(even) {
-                background: #e5e7e8;
-              }
-
-              &:hover {
-                border-color: #008df5;
-              }
-            }
-            .test__thumb-list__item--answered {
-              border-color: #bcc2c4;
-            }
-            .test__thumb-list__item--active {
-              border-color: #008df5;
-            }
-                .test__thumb-list__item__index {
-                  flex-basis: 25px;
-                  font-weight: 700;
-                  color: #a5a5a5;
-                }
-                .test__thumb-list__item__name {
-                  flex: 1;
-                }
 
     .test__footer {
       flex-basis: 100%;
     }
+
+.result-list__item {
+  padding: 20px;
+}
+
+.result-list__item:nth-child(odd) {
+  background: #e5e7e8;
+}

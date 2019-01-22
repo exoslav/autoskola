@@ -16,7 +16,9 @@ import {
   faTrafficLight as fasTrafficLight,
   faSign as fasSign,
   faChalkboardTeacher as fasChalkboardTeacher,
-  faStickyNote as fasStickyNote
+  faStickyNote as fasStickyNote,
+  faTimesCircle as fasTimesCircle,
+  faCheckCircle as fasCheckCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -28,7 +30,7 @@ const initIcons = () => {
   library.add(
     fasMotorcycle, fasCarSide, fasCarCrash, fasCarBattery, fasBus, fasTruck, fasStar, farStar, fasHome,
     fasExclamationTriangle, fasUser, fasAlignJustify, fasTh, fasBriefcaseMedical, fasTrafficLight, fasSign,
-    fasChalkboardTeacher, fasStickyNote, farStickyNote
+    fasChalkboardTeacher, fasStickyNote, farStickyNote, fasTimesCircle, fasCheckCircle
   );
 };
 

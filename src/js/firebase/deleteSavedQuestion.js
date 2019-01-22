@@ -1,6 +1,6 @@
 import * as firebase from 'firebase/app';
 
-const removeFavouriteQuestion = (questionId, userId) => {
+const deleteSavedQuestion = (questionId, userId) => {
   const db = firebase.firestore();
 
   db.settings({
@@ -10,10 +10,10 @@ const removeFavouriteQuestion = (questionId, userId) => {
   return db
     .collection(`users`)
     .doc(`${userId}`)
-    .collection('favourite-questions')
+    .collection('saved-questions')
     .doc(`${questionId}`)
     .delete();
 
 }
 
-export default removeFavouriteQuestion;
+export default deleteSavedQuestion;

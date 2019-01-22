@@ -25,7 +25,7 @@ class QuestionListItem extends React.PureComponent {
               {
                 note &&
                 <Icon
-                  classNames="note"
+                  iconClassName="sticky-note"
                   icon={[note ? 'fas' : 'far', 'sticky-note']}
                 />
               }
@@ -33,7 +33,7 @@ class QuestionListItem extends React.PureComponent {
               {
                 favourite &&
                 <Icon
-                  classNames="star"
+                  iconClassName="star"
                   icon={[favourite ? 'fas' : 'far', 'star']}
                 />
               }
