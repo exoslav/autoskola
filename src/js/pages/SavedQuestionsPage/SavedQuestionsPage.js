@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { lifecycle } from 'recompose';
 
 import compose from '../../utils/compose';
 import withUser from '../../components/hoc/withUser';
@@ -11,41 +12,51 @@ import withComposedQuestions from '../../components/hoc/withComposedQuestions';
 import withSavedQuestionsRecourcer from '../../components/hoc/withSavedQuestionsResourcer';
 import Loader from '../../components/Loader/Loader';
 
-class SavedQuestionsPage extends React.Component {
-  render() {
-    return (
-      <Fragment>
-        {
-          !this.props.user &&
-          <div>Pro prohlížení stránky s uloženými otázkami musíte být přihlášen!</div>
-        }
-
-        {
-          this.props.user &&
-          <Fragment>
-            <QuestionListHeader
-              displayView={this.props.displayView}
-              onDisplayViewChange={this.props.onDisplayViewChange}
-            />
-
-            {
-              (this.props.savedQuestionsLoading || this.props.questionsLoading) &&
-              <div className="list-page__loader">
-                <Loader/>
-                <p className="list-page__loader__label">Načítá se seznam otázek</p>
-              </div>
-            }
-
-            <QuestionList
-              items={this.props.questions}
-              displayView={this.props.displayView}
-            />
-          </Fragment>
-        }
-      </Fragment>
-    );
+const breadcrumbsRoutes = [
+  {
+    label: 'Ulozene otazky',
+    link: 'oblibene-otazky'
   }
-}
+];
+
+const SavedQuestionsPage = ({
+  user,
+  displayView,
+  onDisplayViewChange,
+  savedQuestionsLoading,
+  questionsLoading,
+  questions
+}) => (
+  <Fragment>
+    {
+      !user &&
+      <div>Pro prohlížení stránky s uloženými otázkami musíte být přihlášen!</div>
+    }
+
+    {
+      user &&
+      <Fragment>
+        <QuestionListHeader
+          displayView={displayView}
+          onDisplayViewChange={onDisplayViewChange}
+        />
+
+        {
+          (savedQuestionsLoading || questionsLoading) &&
+          <div className="list-page__loader">
+            <Loader/>
+            <p className="list-page__loader__label">Načítá se seznam otázek</p>
+          </div>
+        }
+
+        <QuestionList
+          items={questions}
+          displayView={displayView}
+        />
+      </Fragment>
+    }
+  </Fragment>
+);
 
 SavedQuestionsPage.propTypes = {
   displayView: PropTypes.string,
@@ -68,7 +79,12 @@ const enhancedQuestionDetailPage = compose(
   withSavedQuestionsRecourcer,
   withSavedQuestionsFetcher,
   withComposedQuestions,
-  withDisplayView
+  withDisplayView,
+  lifecycle({
+    componentDidMount() {
+      this.props.setBreadcrumbsRoutes(breadcrumbsRoutes);
+    }
+  })
 )(SavedQuestionsPage);
 
 export default enhancedQuestionDetailPage;

@@ -4,11 +4,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import queryString  from 'query-string';
 
-import css  from './TestPageStyles.scss';
+import './TestPageStyles.scss';
 
 import compose from '../../utils/compose';
 import withUser from '../../components/hoc/withUser';
 import TestPage from './TestPage';
+import withQueryStringHandler from './withQueryStringHandler';
+import withTestQuestionsRecourcer from './withTestQuestionsRecourcer';
 import {
   getQuestions,
   removeQuestionsFromCategory
@@ -30,24 +32,10 @@ class TestPageContainer extends React.Component {
     this.onAnswerClick = this.onAnswerClick.bind(this);
   }
 
-  componentDidMount() {
-    const { kategorie } = queryString.parse(this.props.location.search);
-
-    this.props.getQuestions(kategorie);
-  }
-
   componentDidUpdate(prevProps) {
-    if (this.props.questions.length !== prevProps.questions.length) {
-      const { questions } = this.props;
-
-      this.setState({ questions });
+    if (this.props.questions !== prevProps.questions) {
+      this.setState({ questions: this.props.questions });
     }
-  }
-
-  componentWillUnmount() {
-    const { kategorie } = queryString.parse(this.props.location.search);
-
-    this.props.removeQuestionsFromCategory(kategorie);
   }
 
   setActiveQuestion(questionId) {
@@ -134,23 +122,6 @@ TestPageContainer.propTypes = {
   )
 };
 
-const mapStateToProps = (state, props) => {
-  const { kategorie } = queryString.parse(props.location.search);
-
-  return {
-    fetching: state.questions.fetching,
-    questions: state.questions.items
-      .filter(category => category.id = kategorie)[0].questions
-      .map((q, index) => {
-        if (index === 0) {
-          return { ...q, active: true };
-        }
-
-        return q;
-      })
-  };
-}
-
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     getQuestions,
@@ -159,10 +130,12 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-const withConnect =  connect(mapStateToProps, mapDispatchToProps)(TestPageContainer);
+const withConnect =  connect(null, mapDispatchToProps)(TestPageContainer);
 
 const enhancedQuestionDetailPageContainer = compose(
-  withUser
+  withUser,
+  withQueryStringHandler,
+  withTestQuestionsRecourcer
 )(withConnect);
 
 export default enhancedQuestionDetailPageContainer;

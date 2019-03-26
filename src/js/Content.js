@@ -1,33 +1,49 @@
 import React, { Fragment } from 'react';
 import { Route } from 'react-router-dom';
-import { connect } from 'react-redux'
 
-import Container from './components/Container/Container';
 import TestPage from './pages/TestPage/TestPageContainer';
 import QuestionsListPage from './pages/QuestionsListPage/QuestionsListPage';
 import QuestionDetailPage from './pages/QuestionDetailPage/QuestionDetailPage';
 import SavedQuestionsPage from './pages/SavedQuestionsPage/SavedQuestionsPage';
 import HomePage from './pages/HomePage';
 import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import ContentBlock from './components/ContentBlock/ContentBlock';
+import Breadcrumbs from './components/Breadcrumbs/Breadcrumbs';
+
+function isHomePage(pathName) {
+  return pathName === '/';
+}
 
 class Content extends React.Component {
   render() {
     return (
-      <Fragment>
+      <div className={`${isHomePage(this.props.location.pathname) ? 'homepage' : 'not-homepage'}`}>
         <Header user={this.props.user} />
+
+        <ContentBlock>
+          {
+            !isHomePage(this.props.location.pathname) &&
+            <div className="container">
+              <Breadcrumbs breadcrumbsRoutes={this.props.breadcrumbsRoutes} />
+            </div>
+          }
+        </ContentBlock>
 
         <Route
           exact
           path="/"
           component={HomePage}
         />
-          
+
         {
-          this.props.location.pathname !== '/' &&
-          <Container classNames="app-content">
+          !isHomePage(this.props.location.pathname) &&
+          <Fragment>
             <Route
               path="/oblibene-otazky"
-              component={SavedQuestionsPage}
+              render={(props) => (
+                <SavedQuestionsPage setBreadcrumbsRoutes={this.props.setBreadcrumbsRoutes} />
+              )}
             />
 
             <Route
@@ -36,6 +52,7 @@ class Content extends React.Component {
               render={(props) => (
                 <QuestionsListPage
                   categoryId={props.match.params.categoryId}
+                  setBreadcrumbsRoutes={this.props.setBreadcrumbsRoutes}
                 />
               )}
             />
@@ -55,27 +72,13 @@ class Content extends React.Component {
               path="/test"
               component={TestPage}
             />
-          </Container>
+          </Fragment>
         }
 
-        {/*<Route*/}
-          {/*path="/test"*/}
-          {/*render={(props) => (*/}
-            {/*<TestPage*/}
-              {/*{...props}*/}
-              {/*user={this.props.user}*/}
-            {/*/>*/}
-          {/*)}*/}
-        {/*/>*/}
-      </Fragment>
+        <Footer/>
+      </div>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    questionFields: state.questionFields
-  };
-}
-
-export default connect(mapStateToProps)(Content)
+export default Content;

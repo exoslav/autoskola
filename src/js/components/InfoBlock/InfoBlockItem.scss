@@ -1,0 +1,8 @@
+.infoblock-item {
+  margin-bottom: 10px;
+  line-height: 150%;
+
+  &.infoblock-item--aligned {
+    width: calc(50% - 10px);
+  }
+}

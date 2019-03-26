@@ -1,0 +1,18 @@
+.pagination-item {
+  margin: 0 2px;
+}
+    .pagination-item__link {
+      display: flex;
+      padding: 5px;
+      line-height: 18px;
+      border-radius: 3px;
+    }
+    .pagination-item__link--active {
+      color: #fff;
+      background: #007791;
+      cursor: default;
+      text-decoration: none !important;
+    }
+    .pagination-item__link--disabled {
+      color: #b7b7b7;
+    }

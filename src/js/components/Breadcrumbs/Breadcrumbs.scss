@@ -1,0 +1,29 @@
+.breadcrums__list {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+    .breadcrumbs__link {
+      position: relative;
+      display: block;
+      padding: 9px 20px;
+
+      &:after {
+        content: '>';
+        position: absolute;
+        top: auto;
+        right: 0;
+        bottom: auto;
+      }
+
+      .icon-component {
+        margin-right: 5px;
+        color: #ec5252;
+      }
+    }
+    .breadcrumbs__link--hp {
+      padding-left: 0;
+    }
+    .breadcrumbs__link--current:after {
+      display: none;
+    }

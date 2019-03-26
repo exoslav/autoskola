@@ -1,0 +1,70 @@
+@import '../../../scss/constants.scss';
+
+.footer__top-stripe {
+  padding: 15px 0;
+  background: #F7F8FA;
+  border-bottom: 1px solid #E8E9EB;
+}
+    .footer__top-stripe__content {
+      display: flex;
+    }
+        .footer__user-icon {
+          margin-right: 20px;
+          font-size: 40px;
+        }
+
+
+    .footer__technologies {
+      padding: 20px 0;
+      border-bottom: 1px solid #E8E9EB;
+    }
+        .footer__container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+            .footer__powered-by {
+              font-size: 20px;
+              text-decoration: underline;
+            }
+            .footer__technologies__list {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            }
+                .footer__technologies__item {
+                  width: 15%;
+
+                  img {
+                    max-width: 100%;
+                    height: auto;
+                  }
+                }
+        
+        .footer__bottom {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px 0;
+        }
+            .footer__logo-block {
+              display: flex;
+              align-items: center;
+            }
+                .footer__copyright {
+                  margin-left: 15px;
+                  padding-top: 5px;
+                  font-size: 13px;
+                  color: #686F7A;
+                }
+
+            .footer__terms-block {
+            }
+                .footer__terms-block__list {
+                  display: flex;
+                  font-size: 13px;
+                  color: #003845;
+                }
+                    .footer__terms-block__list__item {
+                      margin-left: 15px;
+                    }

@@ -1,19 +1,21 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
+import { compose, withHandlers, withStateHandlers } from 'recompose';
 
-import css from './QuestionDetailPage.scss';
+import './QuestionDetailPage.scss';
 
-import compose from '../../utils/compose';
-import AnswerListItem from '../../components/AnswerListItem/AnswerListItem';
+import Container from '../../components/Container/Container';
+import AnswerList from '../../components/AnswerList/AnswerList';
 import LoginAdvantages from '../../components/LoginAdvantages/LoginAdvantages';
 import QuestionInterface from '../../components/QuestionInterface/QuestionInterface';
-import Loader from '../../components/Loader/Loader';
+import LoaderLogo from '../../components/LoaderLogo/LoaderLogo';
 import withUser from '../../components/hoc/withUser';
 import withComposedQuestions from '../../components/hoc/withComposedQuestions';
 import withSingleQuestionResourcer from '../../components/hoc/withSingleQuestionResourcer';
 import withSavedQuestionsResourcer from '../../components/hoc/withSavedQuestionsResourcer';
+import withKeyboardHandlers from '../../components/hoc/withKeyboardHandlers';
 import {
   getQuestionById,
   removeQuestionsFromCategory
@@ -23,108 +25,133 @@ import {
   deleteSavedQuestion,
   removeSavedQuestionsFromState
 } from '../../redux/reducers/savedQuestionsReducer';
+import LabelTag from '../../components/LabelTag/LabelTag'
+import Button from '../../components/Button/Button'
+import { Redirect } from 'react-router-dom'
 
-class QuestionDetailPage extends React.Component {
-  constructor() {
-    super();
+const QuestionDetailPage = ({
+  questionId,
+  questions,
+  savedQuestionsLoading,
+  user,
+  redirectTo,
+  handleSaveQuestion,
+  onRedirectButtonClick,
+  questionsLoading
+}) => {
+  const question = questions[0];
 
-    this.state = {
-      selectedAnswer: null
-    };
+  return (
+    <div className="question-detail">
 
-    this.handleSaveQuestion = this.handleSaveQuestion.bind(this);
-  }
-
-  handleSaveQuestion(note, favourite) {
-    const { user, questions, saveQuestion, deleteSavedQuestion } = this.props;
-
-    if (!user) {
-      return;
-    }
-
-    const question = questions[0];
-
-    if (!note && !favourite) {
-      deleteSavedQuestion(question.id, user.uid);
-      return;
-    }
-
-    saveQuestion(
-      {
-        note,
-        favourite,
-        id: question.id
-      },
-      user.uid
-    );
-  }
-
-  render() {
-    console.log(window.test);
-    window.test = false;
-    console.log('question detail page render');
-    const { questions, savedQuestionsLoading, user, questionId } = this.props;
-    console.log(questions);
-    const question = questions[0];
-
-    return (
-      <Fragment>
-        <div className="question-detail__wrapper">
-          <div className="question-detail__question">
-            <div className="question-detail__question__title-wrapper">
-              <h1 className="question-detail__question__title">{`Otázka číslo: ${questionId}`}</h1>
-              {
-                question && <strong className="answer__title">{question.question}</strong>
-              }
-            </div>
-
-            {
-              !question &&
-              <div className="question-detail__loader">
-                <Loader/>
-                <p className="question-detail__loader__label">{`Načítá se otázka ${questionId}`}</p>
-              </div>
-            }
-
+      <div className="question-detail__question">
+        <Container classNames="question-detail__title-container">
+          <div className="question-detail__title-wrapper">
             {
               question &&
-              <ol className="answers-list">
-                {
-                  question.answers.map((answer, index) => (
-                    <AnswerListItem
-                      key={index}
-                      index={index}
-                      answer={answer}
-                    />
-                  ))
-                }
-              </ol>
+              <h1 className="question-detail__title">{question.question}</h1>
             }
           </div>
 
           <div className="question-detail__box-right">
-            {
-              !user && <LoginAdvantages/>
-            }
+            <div className="question-detail__interface">
+              {
+                !user && <LoginAdvantages/>
+              }
 
-            {
-              user &&
-              <QuestionInterface
-                loading={savedQuestionsLoading}
-                note={question && question.note || ''}
-                favourite={question && question.favourite || false}
-                onSaveQuestion={this.handleSaveQuestion}
-              />
-            }
+              {
+                user &&
+                <QuestionInterface
+                  loading={savedQuestionsLoading}
+                  note={question && question.note || ''}
+                  favourite={question && question.favourite || false}
+                  onSaveQuestion={handleSaveQuestion}
+                />
+              }
+
+              <div className="question-detail__buttons">
+                {
+                  question && question.prevQuestion &&
+                  <Button
+                    text="Předešlá otázka"
+                    classNames={['question-detail__prev-button', 'button--white']}
+                    icon="chevron-left"
+                    iconPosition="left"
+                    onButtonClick={() => onRedirectButtonClick(question.prevQuestion)}
+                  />
+                }
+
+                {
+                  question && question.nextQuestion &&
+                  <Button
+                    text="Další otázka"
+                    classNames={['button--white']}
+                    icon="chevron-right"
+                    iconPosition="right"
+                    onButtonClick={() => onRedirectButtonClick(question.nextQuestion)}
+                  />
+                }
+
+                {
+                  redirectTo &&
+                  <Redirect
+                    push
+                    to={`/otazky/pravidla-provozu/${redirectTo}`}
+                  />
+                }
+              </div>
+            </div>
           </div>
+        </Container>
+      </div>
+
+      <Container classNames={"question-detail__content-container"}>
+        <div className="question-detail__content">
+          {
+            questionsLoading &&
+            <LoaderLogo
+              text={`Načítá se otázka #${questionId}`}
+              classNames="question-detail__loader-logo"
+            />
+          }
+
+          {
+            question &&
+            <AnswerList
+              answers={question.answers}
+              correctAnswer={question.correctAnswer}
+              questionId={question.id}
+            />
+          }
+
+          {
+            question &&
+            <div className="question-detail__labels">
+              <LabelTag
+                classNames="question-detail__label question-detail__points-label"
+                label={<span>Počet bodů za tuto otázku: <strong>{question.points}</strong></span>}
+              />
+              <LabelTag
+                classNames="question-detail__label"
+                label={<span>Kód otázky: <strong>{question.id}</strong></span>}
+              />
+              <LabelTag
+                classNames="question-detail__label question-detail__category-label"
+                label={<span>Kategorie otázky: <strong>{question.category}</strong></span>}
+              />
+            </div>
+          }
         </div>
-      </Fragment>
-    );
-  }
+      </Container>
+    </div>
+  );
 }
 
 QuestionDetailPage.defaultProps = {
-  question: null
+  question: null,
+  redirectTo: null,
+  handleSaveQuestion: () => {},
+  onRedirectButtonClick: () => {}
 };
 
 QuestionDetailPage.propTypes = {
@@ -134,8 +161,13 @@ QuestionDetailPage.propTypes = {
     correctAnswer: PropTypes.number.isRequired,
     answers: PropTypes.arrayOf(PropTypes.string).isRequired,
     note: PropTypes.string,
-    favourite: PropTypes.bool
-  })
+    favourite: PropTypes.bool,
+    prevQuestion: PropTypes.string,
+    nextQuestion: PropTypes.string
+  }),
+  redirectTo: PropTypes.string,
+  handleSaveQuestion: PropTypes.func,
+  onRedirectButtonClick: PropTypes.func
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -148,13 +180,46 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-const withConnect =  connect(null, mapDispatchToProps)(QuestionDetailPage);
-
-const enhancedQuestionDetailPage = compose(
+export default compose(
+  connect(null, mapDispatchToProps),
   withUser,
   withSingleQuestionResourcer,
   withSavedQuestionsResourcer,
-  withComposedQuestions
-)(withConnect);
+  withComposedQuestions,
+  withStateHandlers(
+    { redirectTo: null },
+    {
+      onRedirectButtonClick: (props) => (questionId) => ({ redirectTo: questionId })
+    }
 
-export default enhancedQuestionDetailPage;
+  ),
+  withHandlers({
+    handleSaveQuestion: (props) => (note, favourite) => {
+      const { user, questions, saveQuestion, deleteSavedQuestion } = props;
+
+      if (!user) {
+        return;
+      }
+
+      const question = questions[0];
+
+      if (!note && !favourite) {
+        deleteSavedQuestion(question.id, user.uid);
+        return;
+      }
+
+      saveQuestion(
+        {
+          note,
+          favourite,
+          id: question.id
+        },
+        user.uid
+      );
+    }
+  }),
+  withKeyboardHandlers({
+    arrowLeftCallback: props => props.onRedirectButtonClick(props.questions[0].prevQuestion),
+    arrowRightCallback: props => props.onRedirectButtonClick(props.questions[0].nextQuestion)
+  })
+)(QuestionDetailPage);

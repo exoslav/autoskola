@@ -2,8 +2,11 @@
 
 .question-list-header {
   display: flex;
-  padding: 15px 30px;
-  border-bottom: 2px solid darken(#e5e7e8, 15%);
+  align-items: center;
+  padding: 10px 30px;
+  background: #f9f9f9;
+  border: 1px solid #DEDFE0;
+  margin-bottom: 5px;
 }
     .question-list-header__question-id {
       flex-basis: 150px;
@@ -11,11 +14,22 @@
     .question-list-header__question-title {
       flex: 1;
     }
+
+    .question-list-header__pagination {
+      position: absolute;
+      left: 0;
+      right: 0;
+      width: 400px;
+      margin: auto;
+    }
+
     .question-list-header__grid-view,
     .question-list-header__lines-view {
       margin: 0 5px;
       padding: 0;
       background: none;
+      border: none;
+      cursor: pointer;
 
       &:hover {
         background: none;
@@ -28,5 +42,5 @@
         }
         .question-list-header__grid-view__icon--active,
         .question-list-header__lines-view__icon--active {
-          color: #008df5;
+          color: #007791;
         }

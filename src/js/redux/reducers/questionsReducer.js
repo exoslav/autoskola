@@ -3,13 +3,15 @@ import FirebaseActions from '../../firebase';
 const initState = {
   fetching: true,
   lastVisible: null,
+  listingPageQuestionsLimit: 15,
   items: [
     {
       id: 'pravidla-provozu',
       name: 'Pravidla provozu na pozemních komunikacích',
       icon: 'traffic-light',
       link: '/otazky/pravidla-provozu',
-      perex: 'Otázky oheldně pravidel silničního provozu.',
+      perex: 'Předpisy o provozu na pozemních komunikacích jsou obsahem zákona o provozu na pozemních komunikacích (zákon č. 361/2000 Sb. ve znění pozdějších předpisů).',
+      totalQuestions: 366,
       questions: []
     },
     {
@@ -18,6 +20,7 @@ const initState = {
       icon: 'sign',
       link: '/otazky/dopravni-znacky',
       perex: 'Otázky ohledně dopravních značek.',
+      totalQuestions: 156,
       questions: []
     },
     {
@@ -26,6 +29,7 @@ const initState = {
       icon: 'car-crash',
       link: '/otazky/pravidla-bezpecne-jizdy',
       perex: 'Otázky ohledně bezpečné jízdy.',
+      totalQuestions: 112,
       questions: []
     },
     {
@@ -34,6 +38,7 @@ const initState = {
       icon: 'bus',
       link: '/otazky/dopravni-situace',
       perex: 'Otázky ohledně dopravních situací.',
+      totalQuestions: 61,
       questions: []
     },
     {
@@ -42,6 +47,7 @@ const initState = {
       icon: 'car-battery',
       link: '/otazky/predpisy-provozu-vozidel',
       perex: 'Otázky ohledně předpisů vozidel.',
+      totalQuestions: 53,
       questions: []
     },
     {
@@ -50,6 +56,7 @@ const initState = {
       icon: 'chalkboard-teacher',
       link: '/otazky/predpisy-souvisejici-s-provozem',
       perex: 'Předpisy související s provozem.',
+      totalQuestions: 73,
       questions: []
     },
     {
@@ -58,6 +65,7 @@ const initState = {
       icon: 'briefcase-medical',
       link: '/otazky/zdravotnicka-priprava',
       perex: 'Otázky ohledně zdravotnické přípravy.',
+      totalQuestions: 35,
       questions: []
     }
   ]
@@ -74,20 +82,10 @@ export const removeQuestionsFromCategory = (categoryId) => (dispatch) => {
   });
 }
 
-export const getQuestions = (categoryId, startAfter) => (dispatch) => {
+export const getQuestions = (categoryId, startAt) => (dispatch) => {
   dispatch({ type: GET_QUESTIONS_REQUEST, payload: null });
 
-  FirebaseActions.getQuestionsByCategory(categoryId, startAfter)
-    .then(querySnapshot => dispatchFromQuerySnapshot(querySnapshot, categoryId, dispatch))
-    .catch((err) => {
-      console.log(err);
-    })
-}
-
-export const getQuestionsWithLimit = (categoryId, startAfter) => (dispatch) => {
-  dispatch({ type: GET_QUESTIONS_REQUEST, payload: null });
-
-  FirebaseActions.getQuestionsByCategoryAndLimit(categoryId, startAfter)
+  FirebaseActions.getQuestionsByCount(categoryId, startAt)
     .then(querySnapshot => dispatchFromQuerySnapshot(querySnapshot, categoryId, dispatch))
     .catch((err) => {
       console.log(err);

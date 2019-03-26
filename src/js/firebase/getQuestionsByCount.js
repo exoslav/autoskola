@@ -1,6 +1,6 @@
 import * as firebase from 'firebase/app';
 
-const getQuestionsByCategoryAndLimit = (questionCategory, startAfter, limit = 15) => {
+const getQuestionsByCount = (questionCategory, startAt = 1, limit = 15) => {
   const db = firebase.firestore();
 
   db.settings({
@@ -10,10 +10,11 @@ const getQuestionsByCategoryAndLimit = (questionCategory, startAfter, limit = 15
   return db
     .collection('otazky')
     .where('category', '==', questionCategory)
-    .orderBy('id')
-    .startAfter(startAfter)
+    .orderBy('count')
+    .startAt(startAt)
+    .endAt(startAt + limit - 1)
     .limit(limit)
     .get();
 }
 
-export default getQuestionsByCategoryAndLimit;
+export default getQuestionsByCount;

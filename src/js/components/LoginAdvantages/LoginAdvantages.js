@@ -11,7 +11,7 @@ class LoginAdvantages extends PureComponent {
     return (
       <div className="login-advantages">
         <Icon
-          classNames="user login-advantages__user-icon"
+          customClassName="user login-advantages__user-icon"
           icon="user"
         />
 

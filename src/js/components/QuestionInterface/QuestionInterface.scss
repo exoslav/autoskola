@@ -1,4 +1,5 @@
 .question-interface {
+  padding: 15px;
 }
 
 .question-interface--loading {
@@ -22,6 +23,11 @@
   right: 0;
 }
 
-.question-interface__submit-note {
-
-}
+    .question-interface__note {
+      display: flex;
+      flex-direction: column;
+    }
+    .question-interface__submit-note {
+      align-self: flex-end;
+      margin-top: 15px;
+    }

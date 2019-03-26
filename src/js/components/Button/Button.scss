@@ -2,15 +2,54 @@
 
 .button {
 	padding: 10px 15px;
-	color: #fff;
+	color: #686F7A;
 	font-size: 16px;
 	cursor: pointer;
-	background: #008df5;
-	border: none;
 	border-radius: 3px;
 	outline: none;
+	background: transparent;
+	border: 1px solid #686F7A;
 
 	&:hover {
-		background: darken(#008df5, 5%);
+		color: #29303B;
+		border-color: #29303B;
+	}
+
+	&.button--red {
+		color: #fff;
+		background-color: #EC5252;
+		border-color: #EC5252;
+
+		&:hover {
+			background-color: #992337;
+			border-color: #992337;
+		}
+	}
+
+	&.button--white {
+		background-color: #FFF;
+		border: 1px solid #007791;
+
+		&:hover {
+			background-color: #FFF;
+			border: 1px solid #007791;
+		}
 	}
 }
+.button-component__iconed {
+  display: flex;
+  align-items: center;
+}
+.button-component__iconed--left {
+  .button-component__icon {
+    margin: 0 10px 0 0;
+  }
+}
+.button-component__iconed--right {
+  .button-component__icon {
+    margin: 0 0 0 10px;
+  }
+}
+    .button-component__icon {
+      margin-left: 10px;
+    }

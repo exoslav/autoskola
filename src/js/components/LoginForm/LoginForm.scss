@@ -2,7 +2,7 @@
 
 .login-form__wrapper {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 16px);
   right: 0;
   width: 330px;
   background: #fff;
@@ -33,12 +33,6 @@
   }
 }
 
-.login-form__wrapper--error {
-  &:after {
-    border-color: transparent transparent #ff7878 transparent;
-  }
-}
-
 .login-form__wrapper--error.login-form__wrapper--processing {
   &:after {
     border-color: transparent transparent #ffd0d0 transparent;
@@ -62,12 +56,13 @@
       display: flex;
       align-items: flex-start;
       padding: 15px 25px;
-      color: #fff;
-      background: #ff7878;
+      color: #505763;
       text-align: left;
+      border-bottom: solid 1px #DEDFE0;
     }
         .login-form__error__icon {
           margin: 10px 15px 0 0;
+          color: #ec5252;
         }
         .login-form__error__text {
           font-size: 15px;
@@ -80,19 +75,8 @@
 
     .login-form__footer {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       padding: 15px 25px;
       background: #f9f9f9;
       border-radius: 0 0 3px 3px;
     }
-        .login-form__sign-up-button {
-          padding: 0;
-          margin-right: 20px;
-          color: #333;
-          background: none;
-          
-          &:hover {
-            text-decoration: underline;
-            background: none;
-          }
-        }

@@ -1,11 +1,12 @@
 .login-advantages {
   display: flex;
   flex-direction: column;
+  padding: 15px;
 }
     .login-advantages__user-icon {
       margin-bottom: 15px;
-      font-size: 35px;
-      color: #008df5;
+      font-size: 40px;
+      color: #29303b;
       align-self: center;
     }
     .login-advantages__label {

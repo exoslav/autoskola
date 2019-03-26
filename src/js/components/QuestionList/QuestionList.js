@@ -1,41 +1,40 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-
-import css from './QuestionList.scss';
+import { compose, withStateHandlers } from 'recompose';
 
 import QuestionListItem from '../QuestionListItem/QuestionListItem';
 
-class QuestionList extends React.PureComponent {
-  render() {
-    const { items, displayView } = this.props;
+import './QuestionList.scss';
 
-    return (
-      <Fragment>
+const QuestionList = ({ items, displayView, openItemId, setOpenItemId }) => (
+  <Fragment>
+    {
+      items && items.length > 0 &&
+      <ol className={`question-list question-list--${displayView}-view`}>
         {
-          items && items.length > 0 &&
-          <ol className={`question-list--${displayView}-view`}>
-            {
-              items.map((listItem) => {
-                const { id, category, question, favourite, note } = listItem;
+          items.map((listItem) => {
+            const { id, category, question, favourite, note, answers, correctAnswer } = listItem;
 
-                return (
-                  <QuestionListItem
-                    key={id}
-                    id={id}
-                    question={question}
-                    favourite={favourite}
-                    note={note}
-                    link={`/otazky/${category}/${id}`}
-                  />
-                );
-              })
-            }
-          </ol>
+            return (
+              <QuestionListItem
+                key={id}
+                id={id}
+                question={question}
+                favourite={favourite}
+                note={note}
+                link={`/otazky/${category}/${id}`}
+                answers={answers}
+                open={openItemId === id}
+                setOpenItemId={setOpenItemId}
+                correctAnswer={correctAnswer}
+              />
+            );
+          })
         }
-      </Fragment>
-    );
-  }
-}
+      </ol>
+    }
+  </Fragment>
+);
 
 QuestionList.defaultProps = {
   displayView: 'lines',
@@ -53,4 +52,11 @@ QuestionList.propTypes = {
   }))
 };
 
-export default QuestionList;
+export default compose(
+  withStateHandlers(
+    { openItemId: null },
+    {
+      setOpenItemId: ({ openItemId }) => (id) => ({ openItemId: id === openItemId ? null : id })
+    }
+  )
+)(QuestionList);

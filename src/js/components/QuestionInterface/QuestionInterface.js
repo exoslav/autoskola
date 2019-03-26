@@ -1,99 +1,70 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types';
+import { compose, lifecycle, withHandlers, withStateHandlers } from 'recompose';
 
-import css  from './QuestionInterface.scss';
+import './QuestionInterface.scss';
 
 import Icon from '../Icon/Icon';
 import Loader from '../Loader/Loader';
+import Button from '../Button/Button';
 
-class QuestionInterface extends PureComponent {
-  constructor(props) {
-    super(props);
+const QuestionInterface = ({ note, favourite, loading, saveQuestion, onNoteChange, noteText }) => (
+  <div className={`
+    question-interface
+    ${loading ? ' question-interface--loading' : ''}
+   `}>
 
-    this.state = {
-      note: this.props.note
-    };
-
-    this.saveQuestion = this.saveQuestion.bind(this);
-    this.onNoteChange = this.onNoteChange.bind(this);
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.note !== prevProps.note) {
-      this.setState({ note: this.props.note });
+    {
+      loading && <Loader classNames="question-interface__loader"/>
     }
-  }
 
-  onNoteChange(e) {
-    this.setState({ note: e.target.value });
-  }
-
-  saveQuestion(e, favourite = this.props.favourite) {
-    this.props.onSaveQuestion(this.state.note, favourite);
-  }
-
-  render() {
-    const { note, favourite, loading } = this.props;
-
-    return (
-      <div className={`
-        question-interface
-        ${loading ? ' question-interface--loading' : ''}
-       `}>
-
-        {
-          loading && <Loader classNames="question-interface__loader"/>
-        }
-
-        <div>
-          <div className="froms__field-wrap">
-            <Icon
-              iconClassName="star"
-              icon={[favourite ? 'fas' : 'far', 'star']}
-              onIconClick={(e) => this.saveQuestion(e, !this.props.favourite)}
-            />
-            <span>
-              {
-                loading
-                  ? 'Načítám...'
-                  : favourite
-                    ? 'Odstranit z oblíbených'
-                    : 'Přidat do oblíbených'
-              }
-            </span>
-          </div>
-
-          <div className="froms__field-wrap">
-            <label
-              className="froms__label"
-              htmlFor="question-note"
-            >
-              <Icon
-                iconClassName="sticky-note"
-                icon={[note ? 'fas' : 'far', 'sticky-note']}
-                onIconClick={() => {}}
-              />
-              <span>Poznámka k otázce:</span>
-            </label>
-            <textarea
-              value={this.state.note}
-              name="question-note"
-              id="question-note"
-              onChange={(e) => this.onNoteChange(e)}
-            />
-            <button
-              className="question-interface__submit-note"
-              onClick={this.saveQuestion}
-              type="button"
-            >
-              Uložit poznámku
-            </button>
-          </div>
-        </div>
+    <div>
+      <div className="froms__field-wrap">
+        <Icon
+          iconClassName="star"
+          icon={[favourite ? 'fas' : 'far', 'star']}
+          onIconClick={(e) => saveQuestion(e, !favourite)}
+        />
+        <span>
+          {
+            loading
+              ? 'Načítám...'
+              : favourite
+                ? 'Odstranit z oblíbených'
+                : 'Přidat do oblíbených'
+          }
+        </span>
       </div>
-    );
-  }
-}
+
+      <div className="question-interface__note froms__field-wrap">
+        <label
+          className="froms__label"
+          htmlFor="question-note"
+        >
+          <Icon
+            iconClassName="sticky-note"
+            icon={[note ? 'fas' : 'far', 'sticky-note']}
+            onIconClick={() => {}}
+          />
+          <span>Poznámka k otázce:</span>
+        </label>
+        <textarea
+          value={noteText}
+          name="question-note"
+          id="question-note"
+          onChange={(e) => onNoteChange(e)}
+        />
+
+        <Button
+          classNames={['button--red', 'question-interface__submit-note']}
+          onButtonClick={saveQuestion}
+          type="button"
+          text="Uložit poznámku"
+        />
+      </div>
+    </div>
+  </div>
+);
 
 QuestionInterface.propTypes = {
   note: PropTypes.string,
@@ -109,4 +80,22 @@ QuestionInterface.defaultProps = {
   onSaveQuestion: () => {}
 };
 
-export default QuestionInterface;
+export default compose(
+  withStateHandlers(
+    ({ note }) => ({ noteText: note }),
+    {
+      onNoteChange: () => e => ({ noteText: e.target.value }),
+      saveQuestion: ({ noteText }, props) => (e, favourite = props.favourite) => {
+        props.onSaveQuestion(noteText, favourite);
+      },
+      setNewNoteFromProps: () => noteText => ({ noteText })
+    }
+  ),
+  lifecycle({
+    componentDidUpdate(prevProps) {
+      if (this.props.note !== prevProps.note) {
+        this.props.setNewNoteFromProps(this.props.note);
+      }
+    }
+  })
+)(QuestionInterface);

@@ -17,20 +17,28 @@ import {
   faSign as fasSign,
   faChalkboardTeacher as fasChalkboardTeacher,
   faStickyNote as fasStickyNote,
+  faTimes as fasTimes,
   faTimesCircle as fasTimesCircle,
-  faCheckCircle as fasCheckCircle
+  faCheck as fasCheck,
+  faCheckCircle as fasCheckCircle,
+  faChevronDown as fasChevronDown,
+  faChevronUp as fasChevronUp,
+  faChevronRight as fasChevronRight,
+  faChevronLeft as fasChevronLeft
 } from '@fortawesome/free-solid-svg-icons';
 
 import {
   faStar as farStar,
-  faStickyNote as farStickyNote
+  faStickyNote as farStickyNote,
+  faSadTear as farSadTear
 } from '@fortawesome/free-regular-svg-icons';
 
 const initIcons = () => {
   library.add(
     fasMotorcycle, fasCarSide, fasCarCrash, fasCarBattery, fasBus, fasTruck, fasStar, farStar, fasHome,
     fasExclamationTriangle, fasUser, fasAlignJustify, fasTh, fasBriefcaseMedical, fasTrafficLight, fasSign,
-    fasChalkboardTeacher, fasStickyNote, farStickyNote, fasTimesCircle, fasCheckCircle
+    fasChalkboardTeacher, fasStickyNote, farStickyNote, fasTimesCircle, fasCheckCircle, farSadTear, fasChevronDown,
+    fasChevronRight, fasChevronLeft, fasChevronUp, fasTimes, fasCheck
   );
 };
 

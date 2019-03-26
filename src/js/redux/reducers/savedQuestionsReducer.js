@@ -17,6 +17,12 @@ export const deleteSavedQuestion = (questionId, userId) => (dispatch) => {
   });
 
   FirebaseActions.deleteSavedQuestion(questionId, userId)
+    .then(() => {
+      dispatch({
+        type: SAVED_QUESTION_SUCCESS,
+        payload: null
+      });
+    })
     .catch(err => console.log('Error when removing saved question: ', err));
 }
 

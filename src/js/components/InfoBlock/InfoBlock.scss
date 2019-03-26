@@ -1,0 +1,19 @@
+.infoblock {
+  margin-bottom: 35px;
+  padding: 10px 15px;
+  background-color: #f9f9f9;
+  border: 1px solid #DEDFE0;
+  border-radius: 3px;
+}
+    .infoblock__title{
+      display: block;
+      margin: 0 0 10px 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    .infoblock__list {
+      &.infoblock__list--aligned {
+        display: flex;
+        justify-content: space-between;
+      }
+    }

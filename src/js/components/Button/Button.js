@@ -1,47 +1,69 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { compose, pure, withHandlers } from 'recompose';
 
-import css from './Button.scss';
+import Icon from '../Icon/Icon';
 
-class Button extends React.PureComponent {
-  constructor() {
-    super();
+import './Button.scss';
 
-    this.state = {
-      loginFormOpen: false
-    };
+const iconButton = icon => (
+  <div className="button-component__icon">
+    <Icon icon={icon} />
+  </div>
+);
 
-    this.handleOnClick = this.handleOnClick.bind(this);
-  }
+const Button = ({ type, classNames, icon, text, handleOnClick, iconPosition }) => (
+  <button
+    type={type}
+    className={`
+      button
+      ${classNames.join(' ')}
+      ${icon ? 'button-component__iconed' : ''}
+      ${iconPosition === 'left' ? 'button-component__iconed--left' : ''}
+      ${iconPosition === 'right' ? 'button-component__iconed--right' : ''}
+    `}
+    onClick={handleOnClick}
+  >
+    {
+      icon && iconPosition === 'left' &&
+      iconButton(icon)
+    }
 
-  handleOnClick(e) {
-    e.preventDefault();
+    {text}
 
-    this.props.onButtonClick();
-  }
-
-  render() {
-    return (
-      <button
-        className="button"
-        onClick={this.handleOnClick}
-      >
-        {this.props.text}
-      </button>
-    );
-  }
-}
+    {
+      icon && iconPosition === 'right' &&
+      iconButton(icon)
+    }
+  </button>
+);
 
 Button.defaultProps = {
+  type: 'button',
   text: '',
   updating: false,
-  onButtonClick: () => {}
+  classNames: [],
+  onButtonClick: () => {},
+  icon: null,
+  iconPosition: null
 };
 
 Button.propTypes = {
+  type: PropTypes.string,
   text: PropTypes.string,
   updating: PropTypes.bool,
-  onButtonClick: PropTypes.func
+  classNames: PropTypes.arrayOf(PropTypes.string),
+  onButtonClick: PropTypes.func,
+  icon: PropTypes.string,
+  iconPosition: PropTypes.oneOf(['left', 'right'])
 };
 
-export default withTranslationsContext(Button);
+export default compose(
+  pure,
+  withHandlers({
+    handleOnClick: (props) => (e) => {
+      e.preventDefault();
+      props.onButtonClick();
+    }
+  })
+)(Button);

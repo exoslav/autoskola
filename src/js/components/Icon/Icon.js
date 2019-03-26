@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
-import css from './Icon.scss';
+import './Icon.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -37,10 +36,16 @@ Icon.propTypes = {
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string)
   ]).isRequired,
-  iconClassName: PropTypes.string.isRequired,
+  iconClassName: PropTypes.string,
   customClassName: PropTypes.string,
   classNames: PropTypes.string,
   onIconClick: PropTypes.func
 };
 
 export default Icon;
+
+/*
+* regular icon as: <FontAwesomeIcon icon="wine-glass-alt" />
+* solid icon as: <FontAwesomeIcon icon={['fas', 'check-square']} />
+* readme: https://medium.com/@christine_tran/adding-font-awesome-icons-to-react-projects-c9fb627e3161
+*/

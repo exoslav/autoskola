@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import css from './QuestionListHeader.scss';
+import './QuestionListHeader.scss';
 
 import Icon from '../Icon/Icon';
+import Pagination from '../../pages/QuestionsListPage/Pagination/Pagination';
 
 const LINES = 'lines';
 const GRID = 'grid';
@@ -17,6 +18,12 @@ class QuestionListHeader extends React.Component {
         <strong className="question-list-header__question-id">#</strong>
         <strong className="question-list-header__question-title">Název otázky</strong>
 
+        <Pagination
+          classNames="question-list-header__pagination"
+          categoryId={this.props.categoryId}
+          onPaginationItemClick={this.props.onPaginationItemClick}
+        />
+
         <button
           type="button"
           className="question-list-header__lines-view"
@@ -24,7 +31,7 @@ class QuestionListHeader extends React.Component {
         >
           <Icon
             icon="align-justify"
-            classNames={`
+            iconClassName={`
                 question-list-header__lines-view__icon
                 ${displayView === LINES ? ' question-list-header__lines-view__icon--active' : ''}
               `}
@@ -38,7 +45,7 @@ class QuestionListHeader extends React.Component {
         >
           <Icon
             icon="th"
-            classNames={`
+            iconClassName={`
                 question-list-header__grid-view__icon
                 ${displayView === GRID ? ' question-list-header__grid-view__icon--active' : ''}
               `}

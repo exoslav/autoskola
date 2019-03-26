@@ -22,6 +22,14 @@ export default (BaseComponent) => {
       }
     }
 
+    componentDidUpdate(prevProps) {
+      const { questionId, categoryId } = this.props;
+
+      if (questionId !== prevProps.questionId) {
+        this.props.getQuestionById(categoryId, questionId);
+      }
+    }
+
     render() {
       return (
         <BaseComponent

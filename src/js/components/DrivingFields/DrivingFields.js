@@ -11,18 +11,19 @@ class DrivingFields extends React.Component {
     return (
       <div className="driving-fields">
         <Container>
-          <h2 className="driving-fields__header">Projděte si otázky dle kategorií řidičských oprávnění</h2>
+          <h2 className="driving-fields__header">Projděte si otázky dle kategorií</h2>
 
           {
             this.props.questionFields.length > 0 &&
             <ul className="driving-fields__list">
               {
                 this.props.questionFields.map((categoryItem) => {
-                  const {name, licenseId, icon, link} = categoryItem;
+                  const {name, licenseId, icon, link, totalQuestions } = categoryItem;
 
                   return <DrivingLicencesItem
                     key={link}
                     name={name}
+                    totalQuestions={totalQuestions}
                     licenseId={licenseId}
                     icon={icon}
                     link={link}

@@ -1,33 +1,131 @@
 @import '../../../scss/constants.scss';
 
 .list-page__wrapper {
+  margin-bottom: 50px;
 }
     .list-page__header {
       display: flex;
+      margin-bottom: 20px;
+      padding: 30px 0;
+      background: linear-gradient(#29303b, #29303b, #29303b);
     }
-        .list-page__header__perex {
-          flex: 2;
-        }
-        .list-page__run-test {
+        .list-page__header-wrapper {
           display: flex;
-          flex: 1;
-          justify-content: space-between;
-          flex-direction: column;
         }
-            .list-page__run-test__link {
-              display: flex;
-              padding: 15px;
-              color: $fontColor;
-              background: #fff;
-              border-left: 3px solid #008df5;
+            .list-page__perex {
+              flex: 2;
             }
 
-    .list-page__loader {
+            .list-page__title {
+              margin-bottom: 15px;
+              font-size: 36px;
+              line-height: 41px;
+              color: #fff;
+            }
+
+            .list-page__perex {
+              margin-bottom: 15px;
+              color: #fff;
+            }
+
+            .list-page__header-content {
+              flex: 2;
+
+              .labeltag {
+                margin-right: 20px;
+
+                &.labeltag__last-updated {
+                  color: #29303B;
+                  background: #F59C49;
+                }
+              }
+            }
+
+            .list-page__run-test {
+              flex: 1;
+              justify-content: space-between;
+              padding: 15px;
+              background: #fff;
+              border-radius: 3px;
+            }
+                .list-page__run-test__title {
+                  display: block;
+                  text-align: center;
+                  margin-bottom: 15px;
+                  font-size: 18px;
+                  font-weight: 400;
+                }
+
+                .list-page__form {
+                  margin-bottom: 15px;
+                }
+
+                .list-page__form__questions {
+                  display: flex;
+                }
+                    .list-page__form__questions__inputs {
+                      display: flex;
+                      align-items: center;
+                      flex: 1;
+                      margin-left: 15px;
+
+                      .field-wrap {
+                        margin-right: 15px;
+                      }
+                    }
+
+                .list-page__run-test__link {
+                  display: block;
+                  padding: 15px;
+                  color: $fontColor;
+                  text-decoration: none !important;
+                  text-align: center;
+                  background: #fff;
+                  border-left: 3px solid #008df5;
+                }
+
+                .list-page__infoblocks {
+                  display: flex;
+                  justify-content: space-between;
+
+                  .infoblock {
+                    width: calc(50% - 10px);
+                  }
+                }
+
+    .list-page__questions-block {
+      position: relative;
+      min-height: 250px;
+    }
+        .list-page__loader {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          min-height: 250px;
+          padding-top: 70px;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          background: rgba(255, 255, 255, .9);
+          z-index: 1;
+        }
+            .list-page__loader__label {
+              font-size: 20px;
+            }
+
+    .list-page__no-questions-found {
       display: flex;
       align-items: center;
       flex-direction: column;
-      margin-top: 20px;
+      padding: 30px 0;
+
+      .icon-component {
+        margin-bottom: 15px;
+        color: #007791;
+        font-size: 35px;
+      }
     }
-        .list-page__loader__label {
-          font-size: 20px;
-        }

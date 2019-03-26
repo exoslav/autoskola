@@ -4,12 +4,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import Loader from '../Loader/Loader';
+import Button from '../Button/Button';
 import withTranslationsContext from '../../withTranslationsContext';
 import Icon from '../Icon/Icon';
 
 import { removeAuthErrors } from '../../redux/reducers/authReducer';
 
-import css from './LoginForm.scss';
+import './LoginForm.scss';
 
 class LoginForm extends React.Component {
   constructor() {
@@ -57,7 +58,6 @@ class LoginForm extends React.Component {
       <div
         className={`
         login-form__wrapper
-        ${error ? ' login-form__wrapper--error' : ''}
         ${authInProgress ? ' login-form__wrapper--processing' : ''}`}
       >
         {
@@ -137,20 +137,18 @@ class LoginForm extends React.Component {
           </div>
 
           <div className="login-form__footer">
-            <button
-              className="login-form__sign-up-button"
+            <Button
+              onButtonClick={this.signUp}
               type="button"
-              onClick={this.signUp}
-            >
-              {translations.signUp}
-            </button>
+              text={translations.signUp}
+            />
 
-            <button
+            <Button
+              classNames={['button--red']}
+              onButtonClick={this.signIn}
               type="submit"
-              onClick={this.signIn}
-            >
-              {translations.signIn}
-            </button>
+              text={translations.signIn}
+            />
           </div>
         </form>
       </div>

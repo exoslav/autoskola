@@ -6,16 +6,8 @@ export default (BaseComponent) => {
       super(props);
 
       this.state = {
-        questions: props.questions
+        questions: []
       };
-    }
-
-    componentDidMount() {
-      console.log('with composed questions component mounted');
-    }
-
-    componentWillUnmount() {
-      console.log('with composed questions component is about to unmount');
     }
 
     componentDidUpdate(prevProps) {
@@ -30,20 +22,18 @@ export default (BaseComponent) => {
         const savedQuestionsExists = savedQuestions.length > 0;
 
         if (
-          // if savedQuestion does not exists
-          !savedQuestionsExists &&
-          !savedQuestionsLoading && prevProps.savedQuestionsLoading
-        ) {
-          this.setState({ questions });
-        } else if (
           questionsLoading !== prevProps.questionsLoading ||
           savedQuestionsLoading !== prevProps.savedQuestionsLoading
         ) {
-          // when currentQuestion and favouroteQuestion both exits (wait both are loaded)
-          if (savedQuestionsExists && questionsExists) {
+          if (
+            (questionsExists && savedQuestionsExists &&
+              (!questionsLoading && prevProps.questionsLoading)) ||
+            (questionsExists && savedQuestionsExists &&
+              (!savedQuestionsLoading && prevProps.savedQuestionsLoading))
+          ) {
             const savedQuestionsAsObject = mapSavedQuestionsToObject(savedQuestions);
             this.setState({
-              questions: questions.map(q => {
+              questions: questions.map((q) => {
                 if (savedQuestionsAsObject[q.id]) {
                   return {
                     ...q,
@@ -55,6 +45,11 @@ export default (BaseComponent) => {
                 return q;
               })
             });
+          } else if (
+            questionsExists &&
+            (!questionsLoading && prevProps.questionsLoading)
+          ) {
+            this.setState({ questions });
           }
         }
       } else {
@@ -65,7 +60,6 @@ export default (BaseComponent) => {
     }
 
     render() {
-      console.log('with composed questions component render');
       return (
         <BaseComponent
           {...this.props}
