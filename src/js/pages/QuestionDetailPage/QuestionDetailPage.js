@@ -16,10 +16,7 @@ import withComposedQuestions from '../../components/hoc/withComposedQuestions';
 import withSingleQuestionResourcer from '../../components/hoc/withSingleQuestionResourcer';
 import withSavedQuestionsResourcer from '../../components/hoc/withSavedQuestionsResourcer';
 import withKeyboardHandlers from '../../components/hoc/withKeyboardHandlers';
-import {
-  getQuestionById,
-  removeQuestionsFromCategory
-} from '../../redux/reducers/questionsReducer';
+import { getQuestionById } from '../../redux/reducers/questionsReducer';
 import {
   saveQuestion,
   deleteSavedQuestion,
@@ -174,7 +171,6 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     getQuestionById,
     saveQuestion,
-    removeQuestionsFromCategory,
     deleteSavedQuestion,
     removeSavedQuestionsFromState
   }, dispatch);

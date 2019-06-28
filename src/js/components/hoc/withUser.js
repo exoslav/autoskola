@@ -13,9 +13,7 @@ export default (BaseComponent) => {
     }
   }
 
-  const mapStateToProps = (state) => {
-    return { user: state.auth.user };
-  }
+  const mapStateToProps = (state) => ({ user: state.auth.user });
 
   return connect(mapStateToProps)(withUser);
 }

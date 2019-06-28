@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
-import { getQuestionById, removeQuestionsFromCategory } from '../../redux/reducers/questionsReducer'
+import { getQuestionById } from '../../redux/reducers/questionsReducer'
 
 export default (BaseComponent) => {
   class withSingleQuestionResourcer extends React.Component {
@@ -11,14 +11,6 @@ export default (BaseComponent) => {
 
       if (questionId && categoryId) {
         this.props.getQuestionById(categoryId, questionId);
-      }
-    }
-
-    componentWillUnmount() {
-      const { categoryId } = this.props;
-
-      if (categoryId) {
-        this.props.removeQuestionsFromCategory(categoryId);
       }
     }
 
@@ -55,8 +47,7 @@ export default (BaseComponent) => {
 
   const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-      getQuestionById,
-      removeQuestionsFromCategory
+      getQuestionById
     }, dispatch);
   }
 

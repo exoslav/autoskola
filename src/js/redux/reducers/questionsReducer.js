@@ -73,14 +73,6 @@ const initState = {
 
 const GET_QUESTIONS_REQUEST = 'questions/GET_QUESTIONS_REQUEST';
 const GET_QUESTIONS_SUCCESS = 'questions/GET_QUESTIONS_SUCCESS';
-const REMOVE_QUESTIONS_FROM_CATEGORY = 'questions/REMOVE_QUESTIONS_FROM_CATEGORY';
-
-export const removeQuestionsFromCategory = (categoryId) => (dispatch) => {
-  dispatch({
-    type: REMOVE_QUESTIONS_FROM_CATEGORY,
-    payload: { categoryId, newQuestionsList: [] }
-  });
-}
 
 export const getQuestions = (categoryId, startAt) => (dispatch) => {
   dispatch({ type: GET_QUESTIONS_REQUEST, payload: null });
@@ -142,20 +134,6 @@ export default (state = initState, action) => {
               ...item,
               questions: action.payload.questions
             }
-          }
-
-          return item;
-        })
-      }
-    case REMOVE_QUESTIONS_FROM_CATEGORY:
-      return {
-        ...state,
-        items: state.items.map(item => {
-          if (item.id === action.payload.categoryId) {
-            return {
-              ...item,
-              questions: action.payload.newQuestionsList
-            };
           }
 
           return item;

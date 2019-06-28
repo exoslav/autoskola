@@ -46,9 +46,9 @@ export default (BaseComponent) => {
 
         this.props.getQuestions(this.props.categoryId, page);
       },
-      componentWillUnmount() {
-        this.props.removeQuestionsFromCategory(this.props.categoryId);
-      }
+//      componentWillUnmount() {
+//        this.props.removeQuestionsFromCategory(this.props.categoryId);
+//      }
     }),
     withHandlers({
       getNewMultipleQuestions: (props) => (pageIndex) => {
